@@ -9,6 +9,10 @@ import sys
 # The venv's bin/ (where ninja lives) isn't on PATH when python is invoked by full path — add it.
 os.environ["PATH"] = os.path.dirname(sys.executable) + os.pathsep + os.environ.get("PATH", "")
 
+# vLLM stability flags for this checkpoint (set before the engine imports).
+os.environ.setdefault("VLLM_USE_DEEP_GEMM", "0")
+os.environ.setdefault("VLLM_USE_FLASHINFER_SAMPLER", "0")
+
 # The 82.9 "clean" recipe (English olmOCR-Bench). Env vars already set take precedence.
 DEFAULTS = {
     "OCR_MIN_PX_SIDE": "256",      # crop-upscale floor (largest single win)

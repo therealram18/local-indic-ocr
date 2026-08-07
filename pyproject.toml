@@ -8,14 +8,20 @@ version = "0.1.0"
 description = "Modular block-level Indic document parser (layout + reading order + per-block OCR)"
 readme = "README.md"
 requires-python = ">=3.11"
-# Pip-installable deps only. torch (2.11.0+cu129) and vllm (0.20.1rc1.dev...+cu129) are a custom
-# CUDA-12.9 build that is NOT on PyPI — provide them via the Docker image (recommended) or a GPU
-# venv that already has them (e.g. the validated .venv_ref). See README.
+# `pip install indic-doc-parser` pulls these. vLLM's default PyPI wheel works on most CUDA drivers;
+# if yours needs a specific CUDA line (e.g. cu129), build the env with envs/setup_inference_env.sh
+# (which pulls matching wheels) — same pattern Surya uses with its Docker image. Verified stack:
+# vllm 0.26.1 + torch 2.13.0+cu129 + transformers 5.14.1.
 dependencies = [
-    "transformers==5.7.0",
+    "vllm>=0.26",
+    "transformers>=5.7",
+    "scipy",
+    "ninja",
     "pillow>=12",
     "numpy>=2",
     "huggingface-hub>=1.0",
+    "hf_xet",
+    "accelerate",
 ]
 
 [project.scripts]
