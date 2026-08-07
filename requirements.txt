@@ -1,0 +1,12 @@
+# Pip-installable dependencies (validated versions from the vLLM venv)
+transformers==5.7.0
+pillow==12.2.0
+numpy==2.3.5
+huggingface-hub==1.13.0
+
+# --- GPU runtime: custom CUDA-12.9 build, NOT on PyPI ---------------------------------
+# Provide these via the Docker image (recommended) or an existing GPU venv (e.g. .venv_ref):
+#   torch==2.11.0+cu129
+#   vllm==0.20.1rc1.dev125+g947138b6c.cu129
+# `ninja` ships in that env's bin/; the package adds the venv bin to PATH automatically
+# (the OCR model JIT-compiles a GDN kernel on first inference).

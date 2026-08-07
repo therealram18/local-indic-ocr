@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "indic-doc-parser"
+version = "0.1.0"
+description = "Modular block-level Indic document parser (layout + reading order + per-block OCR)"
+readme = "README.md"
+requires-python = ">=3.11"
+# Pip-installable deps only. torch (2.11.0+cu129) and vllm (0.20.1rc1.dev...+cu129) are a custom
+# CUDA-12.9 build that is NOT on PyPI — provide them via the Docker image (recommended) or a GPU
+# venv that already has them (e.g. the validated .venv_ref). See README.
+dependencies = [
+    "transformers==5.7.0",
+    "pillow>=12",
+    "numpy>=2",
+    "huggingface-hub>=1.0",
+]
+
+[project.scripts]
+indic-doc-parser = "indic_doc_parser.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["indic_doc_parser*"]
