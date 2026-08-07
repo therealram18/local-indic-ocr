@@ -1,0 +1,40 @@
+{
+  "backend": "tokenizers",
+  "boi_token": "<|start_of_image|>",
+  "bos_token": "[@BOS@]",
+  "clean_up_tokenization_spaces": false,
+  "eoi_token": "<|end_of_image|>",
+  "eos_token": "<|im_end|>",
+  "extra_special_tokens": [
+    "<|endoftext|>",
+    "<|im_start|>",
+    "<|im_end|>",
+    "<|object_ref_start|>",
+    "<|object_ref_end|>",
+    "<|box_start|>",
+    "<|box_end|>",
+    "<|quad_start|>",
+    "<|quad_end|>",
+    "<|vision_start|>",
+    "<|vision_end|>",
+    "<|image_pad|>",
+    "<|video_pad|>"
+  ],
+  "image_token": "<|image_pad|>",
+  "is_local": true,
+  "local_files_only": true,
+  "model_max_length": 1000000000000000019884624838656,
+  "model_specific_special_tokens": {
+    "boi_token": "<|start_of_image|>",
+    "eoi_token": "<|end_of_image|>",
+    "image_token": "<|image_pad|>"
+  },
+  "pad_token": "<|endoftext|>",
+  "padding_side": "right",
+  "processor_class": "Qwen3VLProcessor",
+  "sp_model_kwargs": null,
+  "spaces_between_special_tokens": false,
+  "tokenizer_class": "TokenizersBackend",
+  "unk_token": "<unk>",
+  "use_default_system_prompt": false
+}
