@@ -75,7 +75,9 @@ class LayoutParser:
                    "conf": round(float(d["score"]), 3)}
                   for d in dets]
         blocks.sort(key=lambda b: b["order"])
-        return {"image": os.path.basename(image_path), "width": W, "height": H, "blocks": blocks}
+        return {"image": os.path.basename(image_path),
+                "image_path": os.path.abspath(image_path),   # so stage 2 can find the image from the layout
+                "width": W, "height": H, "blocks": blocks}
 
 
 class BlockOCR:
