@@ -87,6 +87,10 @@ The layout stage on real pages across scripts and conditions. Coloured boxes are
 <td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-santali.png"><img src="assets/layout-santali-thumb.png" width="150"/></a><br/><sub>Santali · Ol Chiki journal</sub></td>
 <td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-urdu.png"><img src="assets/layout-urdu-thumb.png" width="150"/></a><br/><sub>Urdu · worksheet</sub></td>
 </tr>
+<tr>
+<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-hw-hindi.png"><img src="assets/layout-hw-hindi-thumb.png" width="150"/></a><br/><sub>Hindi · handwritten</sub></td>
+<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-hw-english.png"><img src="assets/layout-hw-english-thumb.png" width="150"/></a><br/><sub>English · handwritten</sub></td>
+</tr>
 </table>
 
 ---
