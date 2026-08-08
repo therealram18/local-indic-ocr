@@ -49,3 +49,6 @@ assets/layout-hw-english-thumb.png filter=lfs diff=lfs merge=lfs -text
 assets/layout-hw-english.png filter=lfs diff=lfs merge=lfs -text
 assets/layout-hw-hindi-thumb.png filter=lfs diff=lfs merge=lfs -text
 assets/layout-hw-hindi.png filter=lfs diff=lfs merge=lfs -text
+assets/example-ramanujan-thumb.png filter=lfs diff=lfs merge=lfs -text
+assets/example-ramanujan.png filter=lfs diff=lfs merge=lfs -text
+assets/layout-telugu-thumb.png filter=lfs diff=lfs merge=lfs -text

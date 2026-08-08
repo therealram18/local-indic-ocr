@@ -78,13 +78,13 @@ The layout stage on real pages across scripts and conditions. Coloured boxes are
 
 <table>
 <tr>
-<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-hindi.png"><img src="assets/layout-hindi-thumb.png" width="150"/></a><br/><sub>Hindi · legal notice</sub></td>
-<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-english.png"><img src="assets/layout-english-thumb.png" width="150"/></a><br/><sub>English · vintage newspaper</sub></td>
-<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-telugu.png"><img src="assets/layout-telugu-thumb.png" width="150"/></a><br/><sub>Telugu · textbook</sub></td>
+<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-hindi.png"><img src="assets/layout-hindi-thumb.png" width="150"/></a><br/><sub>Hindi · syllabus</sub></td>
+<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-english.png"><img src="assets/layout-english-thumb.png" width="150"/></a><br/><sub>English · math paper</sub></td>
+<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-telugu.png"><img src="assets/layout-telugu-thumb.png" width="150"/></a><br/><sub>Telugu · novel</sub></td>
 </tr>
 <tr>
 <td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-bengali.png"><img src="assets/layout-bengali-thumb.png" width="150"/></a><br/><sub>Bengali · old book</sub></td>
-<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-santali.png"><img src="assets/layout-santali-thumb.png" width="150"/></a><br/><sub>Santali · Ol Chiki journal</sub></td>
+<td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-santali.png"><img src="assets/layout-santali-thumb.png" width="150"/></a><br/><sub>Santali · Ol Chiki</sub></td>
 <td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-urdu.png"><img src="assets/layout-urdu-thumb.png" width="150"/></a><br/><sub>Urdu · worksheet</sub></td>
 </tr>
 <tr>
@@ -92,6 +92,14 @@ The layout stage on real pages across scripts and conditions. Coloured boxes are
 <td align="center"><a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/layout-hw-english.png"><img src="assets/layout-hw-english-thumb.png" width="150"/></a><br/><sub>English · handwritten</sub></td>
 </tr>
 </table>
+
+<h3 style="color:#F97316;">End-to-end on a page</h3>
+
+The full pipeline on one page: **layout and reading order on the left, the model's OCR output rendered (with LaTeX) on the right.** Click to open full size.
+
+<a href="https://huggingface.co/oikantik-bodhan/indic-doc-parser/resolve/main/assets/example-ramanujan.png"><img src="assets/example-ramanujan-thumb.png" width="760"/></a>
+
+<sub>A page from Ramanujan's first published paper (Bernoulli numbers).</sub>
 
 ---
 
