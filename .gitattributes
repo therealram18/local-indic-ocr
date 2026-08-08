@@ -42,3 +42,6 @@ assets/layout-hindi.png filter=lfs diff=lfs merge=lfs -text
 assets/layout-santali-thumb.png filter=lfs diff=lfs merge=lfs -text
 assets/layout-santali.png filter=lfs diff=lfs merge=lfs -text
 assets/layout-telugu.png filter=lfs diff=lfs merge=lfs -text
+assets/layout-bengali-thumb.png filter=lfs diff=lfs merge=lfs -text
+assets/layout-urdu-thumb.png filter=lfs diff=lfs merge=lfs -text
+assets/layout-urdu.png filter=lfs diff=lfs merge=lfs -text
