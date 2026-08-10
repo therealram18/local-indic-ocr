@@ -14,7 +14,11 @@ tags:
 metrics: [wer]
 ---
 
-<h1 id="indicdocparser" style="color:#F97316;">IndicDocParser</h1>
+<div align="center">
+
+<img src="assets/diagram.png" alt="IndicDocParser: page image to layout detection with reading order, then block-level OCR, then Markdown" width="100%">
+
+</div>
 
 <div align="center">
 
@@ -28,6 +32,10 @@ metrics: [wer]
 
 **Block-level document parsing for English and 22 Indian languages. Page image in,
 reading-ordered Markdown and per-block JSON out.**
+
+<div align="center">
+  <img src="diagram.png" alt="IndicDocParser pipeline: a page image is detected and ordered into labelled blocks by IndicDocLayout, each block is transcribed by IndicBlockOCR, and the result is reading-ordered Markdown plus per-block JSON" width="100%">
+</div>
 
 IndicDocParser reads a document page and returns its text in reading order. It is a modular,
 two-stage parser: **IndicDocLayout** finds the blocks on the page and orders them, and
