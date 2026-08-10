@@ -25,8 +25,7 @@ metrics: [wer]
 
 </div>
 
-**Multilingual document parsing for English and 22 Indian languages. Give it a page image and get
-back reading-ordered Markdown plus per-block JSON, with math as LaTeX and tables as HTML or
+**Multilingual document parsing for English and 22 Indian languages. Given a document page as input, get back reading-ordered Markdown plus per-block JSON, with math as LaTeX and tables as HTML or
 Markdown.**
 
 <div align="center">
