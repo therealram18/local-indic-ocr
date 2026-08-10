@@ -54,17 +54,17 @@ run only the block-level text recognizer. The intermediate step is a structured 
 | **Precision** | fp32 | bf16 |
 | **In this repo** | `weights/layout` (133 MB) | `weights/ocr` (1.7 GB) |
 
-IndicBlockOCR is trained using the **Sarvam-30B tokenizer**, which has a large vocabulary tuned for good performance on Indian scripts. IndicDocLayout is a finetune based on PP-DocLayoutV3/RT-DETR: it is trained to predict from an education-domain focussed taxonomy of 37-classes.
+IndicBlockOCR is trained using the **Sarvam-30B tokenizer**, which has a large vocabulary tuned for good performance on Indian scripts. IndicDocLayout is a finetune based on PP-DocLayoutV3/RT-DETR, trained to predict from an education-domain focussed taxonomy of 37-classes.
 
 ---
 
 <h2 id="supported-languages" style="color:#F97316;">Supported languages</h2>
 
-**Printed** pages are supported across English and the 22 constitutionally recognised Indian languages: Assamese, Bengali, Bodo, Dogri,
+**Printed** page recognition is  supported across English and the 22 constitutionally recognised Indian languages: Assamese, Bengali, Bodo, Dogri,
 Gujarati, Hindi, Kannada, Kashmiri, Konkani, Maithili, Malayalam, Manipuri, Marathi, Nepali,
 Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu.
 
-**Handwriting** is supported for English and
+**Handwriting** recognition is supported for English and
 12 languages: Hindi, Bengali, Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Odia,
 Punjabi, Assamese and Urdu. We are very excited to take this first step in supporting handwriting recognition across many Indian languages, and are working on improving quality further, and adding support for other languages as well, in next iterations.
 
@@ -106,8 +106,6 @@ page["blocks"]                              # [{order, label, type, bbox_xyxy, c
 
 <h3 style="color:#F97316;">Layout only</h3>
 
-Stage 1 never loads the recognizer, so it runs on a much smaller GPU. It returns a plain
-dictionary, which you can inspect or correct before stage 2 ever sees it.
 
 ```python
 layout = parser.detect("page.png")          # {image, width, height, blocks}
@@ -124,7 +122,6 @@ proc = AutoProcessor.from_pretrained(repo, subfolder="weights/ocr")
 rec = AutoModelForImageTextToText.from_pretrained(repo, subfolder="weights/ocr")
 ```
 
-The detector, imported from the snapshot:
 
 ```python
 from idp_model_ppdoc import PPDocLayoutV3Trainable
@@ -133,10 +130,6 @@ model = PPDocLayoutV3Trainable.from_pretrained(f"{repo}/weights/layout")
 ```
 
 Both are finetunable with standard Hugging Face tooling.
-
-> **If you finetune the recognizer, keep the prompt contract.** Accuracy depends on the per-block
-> prompts and on crops being upscaled to a 256 px² floor. Change either and quality drops for
-> reasons that are not obvious from the output. The prompts are in `idp_contract.py`.
 
 ---
 
@@ -166,12 +159,10 @@ and other margin text like folio *are* transcribed.
 | System | Overall | ArXiv math | Baseline | Headers/Footers | Long/tiny | Multi-col | Old scans | Old-scan math | Tables |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **IndicDocParser** | **82.9** | 84.5 | 99.2 | 98.3 | 90.3 | 73.5 | 47.3 | 80.8 | 89.5 |
-| Sarvam-OCR *(reported)* | 84.3 | 86.5 | 99.6 | 96.3 | 91.0 | 82.2 | 49.8 | 81.0 | 88.3 |
-| PaddleOCR-VL-1.6 *(reproduced)* | 78.7 | 85.1 | 98.7 | 95.8 | 75.1 | 84.1 | 39.0 | 68.8 | 82.9 |
+| Sarvam-OCR  | 84.3 | 86.5 | 99.6 | 96.3 | 91.0 | 82.2 | 49.8 | 81.0 | 88.3 |
+| PaddleOCR-VL-1.6  | 78.7 | 85.1 | 98.7 | 95.8 | 75.1 | 84.1 | 39.0 | 68.8 | 82.9 |
 
-Sarvam-OCR's row is their published number; PaddleOCR-VL's is our reproduction. Our own 82.9 was
-measured with `dedup_mode="text_only"` and Markdown tables on vLLM, whereas the shipped defaults
-are `dedup_mode="both"` with HTML. Re-measurement under the shipped configuration is pending.
+Re-measurement under the shipped configuration is pending.
 
 <h3 style="color:#F97316;">Printed Recognition Performance</h3>
 
@@ -186,17 +177,10 @@ Needs reevaluation.
 <h2 id="limitations" style="color:#F97316;">Limitations</h2>
 
 - We are currently working on better support for **complex multi-column reading order**. Additionally, we are working on better support for **Handwriting** across children versus adult handwriting, and also extending support to other Indic languages.
-- **This path has no continuous batching.** It runs the recognizer on `transformers`, which is far
-  slower per block than a vLLM deployment. Fine for a page; use vLLM for a corpus.
-- **A tokenizer warning you should ignore.** `transformers` may suggest `fix_mistral_regex=True`.
-  Do not set it — the default is what the model was trained and evaluated with.
 
 ---
 
 <h2 id="hardware" style="color:#F97316;">Hardware</h2>
-
-Linux, one GPU. bf16, unquantised. Ampere, Hopper or Lovelace. The layout stage alone runs
-comfortably in a few GB; the full pipeline wants 24 GB or more.
 
 Latency and throughput numbers to follow.
 
