@@ -16,12 +16,6 @@ metrics: [wer]
 
 <div align="center">
 
-<img src="assets/diagram.png" alt="IndicDocParser: page image to layout detection with reading order, then block-level OCR, then Markdown" width="100%">
-
-</div>
-
-<div align="center">
-
 [![Pipeline](https://img.shields.io/badge/Pipeline-Layout%20%2B%20OCR-F97316?style=flat)](#the-two-models)
 [![Layout](https://img.shields.io/badge/IndicDocLayout-33M-F97316?style=flat)](#the-two-models)
 [![Recognizer](https://img.shields.io/badge/IndicBlockOCR-0.8B-F97316?style=flat)](#the-two-models)
@@ -30,11 +24,11 @@ metrics: [wer]
 
 </div>
 
-**Block-level document parsing for English and 22 Indian languages. Page image in,
+**Multilingual document parsing for English and 22 Indian languages. Page image in,
 reading-ordered Markdown and per-block JSON out.**
 
 <div align="center">
-  <img src="diagram.png" alt="IndicDocParser pipeline: a page image is detected and ordered into labelled blocks by IndicDocLayout, each block is transcribed by IndicBlockOCR, and the result is reading-ordered Markdown plus per-block JSON" width="100%">
+  <img src="assets/diagram.png" alt="IndicDocParser pipeline: a page image is detected and ordered into labelled blocks by IndicDocLayout, each block is transcribed by IndicBlockOCR, and the result is reading-ordered Markdown plus per-block JSON" width="100%">
 </div>
 
 IndicDocParser reads a document page and returns its text in reading order. It is a modular,
