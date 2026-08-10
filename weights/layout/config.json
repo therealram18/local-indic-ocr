@@ -288,9 +288,5 @@
   "weight_loss_bbox": 5.0,
   "weight_loss_giou": 2.0,
   "weight_loss_vfl": 1.0,
-  "x4_feat_dim": 128,
-  "auto_map": {
-    "AutoModel": "modeling_ppdoc.PPDocLayoutV3Trainable",
-    "AutoModelForObjectDetection": "modeling_ppdoc.PPDocLayoutV3Trainable"
-  }
+  "x4_feat_dim": 128
 }
