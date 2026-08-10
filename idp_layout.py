@@ -49,12 +49,16 @@ class IndicDocLayoutBackend:
         config: LayoutConfig | None = None,
         dedup: DedupConfig | None = None,
     ) -> None:
-        from idp_checkpoints import resolve_ckpt
         from idp_model_infer import get_model
 
         self.config = config or LayoutConfig()
         self.dedup = dedup or DedupConfig()
-        self.ckpt = resolve_ckpt("layout", ckpt)
+        if ckpt is None:
+            raise ValueError(
+                "no layout weights given -- "
+                "IndicDocParser.from_pretrained(snapshot_download(REPO))"
+            )
+        self.ckpt = ckpt
         self.model = get_model(self.ckpt, device=self.config.device)
 
     def detect(self, image: Image) -> list[Block]:

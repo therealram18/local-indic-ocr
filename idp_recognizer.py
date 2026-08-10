@@ -77,14 +77,18 @@ class HfRecognizer:
         import torch
         from transformers import AutoModelForImageTextToText, AutoProcessor
 
-        from idp_checkpoints import resolve_ckpt
 
         self._torch = torch
         self.config = config or RecognizerConfig()
         # RecognizerConfig.batch_size sizes a vLLM chunk (~2048). Generating that many at once
         # here would simply OOM; HF batches are bounded by memory, not by scheduler behaviour.
         self.batch_size = batch_size
-        self.ckpt = resolve_ckpt("recognizer", ckpt)
+        if ckpt is None:
+            raise ValueError(
+                "no recognizer weights given -- "
+                "IndicDocParser.from_pretrained(snapshot_download(REPO))"
+            )
+        self.ckpt = ckpt
 
         self.processor = AutoProcessor.from_pretrained(self.ckpt)
         tokenizer = self.processor.tokenizer

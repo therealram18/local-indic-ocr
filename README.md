@@ -43,7 +43,7 @@ run only the recognizer. The intermediate is a plain JSON file passed between th
 | | IndicDocLayout | IndicBlockOCR |
 | --- | --- | --- |
 | **Role** | detect blocks + reading order | transcribe each block |
-| **Architecture** | PP-DocLayoutV3 (RT-DETR) with an integrated reading-order head | Qwen3.5 vision-language model |
+| **Architecture** | PP-DocLayoutV3 (RT-DETR) for layout detection with an integrated reading-order head | Qwen3.5 vision-language model |
 | **Parameters** | ~33 M | ~0.8 B |
 | **Precision** | fp32 | bf16 |
 | **In this repo** | `weights/layout` (133 MB) | `weights/ocr` (1.7 GB) |
