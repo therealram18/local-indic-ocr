@@ -1,5 +1,6 @@
 # The model code ships in this repo; these are its only third-party dependencies.
 torch
 transformers>=5.7
+accelerate
 pillow>=12
 huggingface_hub>=1.0

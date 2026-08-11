@@ -74,7 +74,7 @@ Punjabi, Assamese and Urdu. We are very excited to take this first step in suppo
 <h3 style="color:#F97316;">Installation</h3>
 
 ```bash
-pip install torch transformers pillow huggingface_hub
+pip install torch transformers pillow accelerate huggingface_hub
 ```
 
 
