@@ -96,7 +96,7 @@ Punjabi, Assamese and Urdu. We are very excited to take this first step in suppo
 <h3 style="color:#F97316;">Installation</h3>
 
 The repo ships an installer that reads your driver and picks matching CUDA wheels. If you work in a
-virtual environment, it is worth activating it first, as the installer installs into whichever
+virtual environment, please activate it first, as the installer installs into whichever
 Python is active.
 
 ```bash
@@ -123,7 +123,7 @@ page = parser.parse("page.png")
 print(page["markdown"])                     # reading-ordered Markdown
 ```
 
-`page` also carries the per-block detail, which you will usually want on disk:
+`page` also carries the per-block detail, which you can save as follows:
 
 ```python
 import json
@@ -132,7 +132,6 @@ with open("page.json", "w", encoding="utf-8") as f:
     json.dump(page, f, ensure_ascii=False, indent=2)
 ```
 
-`ensure_ascii=False` keeps Indic text readable in the file rather than escaping it to `\uXXXX`.
 
 <h3 style="color:#F97316;">Layout only</h3>
 
@@ -164,26 +163,22 @@ with open("layout.json", "w", encoding="utf-8") as f:
 There is no `text` field here, because nothing has been transcribed yet. Edit this file if you want
 to correct a box or an order, then feed it to stage 2.
 
-<h3 style="color:#F97316;">Using either model on its own</h3>
+<h3 style="color:#F97316;">Running one stage at a time</h3>
 
-Both models are ordinary Hugging Face checkpoints, and both are finetunable with standard tooling.
-
-IndicDocLayout, the detector:
-
-```python
-from idp_model_ppdoc import PPDocLayoutV3Trainable
-
-model = PPDocLayoutV3Trainable.from_pretrained(f"{repo}/weights/layout")
-```
-
-IndicBlockOCR, the recognizer. It is a stock Qwen3.5 checkpoint, so it needs no custom code:
+Each stage is a class of its own, so you can run them separately, in different processes, or on
+different machines:
 
 ```python
-from transformers import AutoModelForImageTextToText, AutoProcessor
+from indic_doc_parser import IndicDocLayout, IndicBlockOCR
 
-proc = AutoProcessor.from_pretrained(repo, subfolder="weights/ocr")
-rec = AutoModelForImageTextToText.from_pretrained(repo, subfolder="weights/ocr")
+layout = IndicDocLayout(f"{repo}/weights/layout").detect("page.png")
+page = IndicBlockOCR(f"{repo}/weights/ocr").run("page.png", layout)
 ```
+
+`run()` takes a layout object, a dict, or the path to a layout JSON file. That last form is the
+useful one: detect a page, correct a box or a reading-order rank in the JSON, then transcribe the
+corrected version. It also means you can swap in a layout from a different detector entirely, as
+long as it carries the same fields.
 
 ---
 

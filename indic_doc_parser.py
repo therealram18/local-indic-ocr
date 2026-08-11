@@ -14,14 +14,13 @@
 not importable on its own. With the path added, this is ordinary Python -- no
 ``trust_remote_code``, and nothing of ours to install.
 
-The pipeline is two models, both under ``weights/`` here. Either is usable and finetunable on its
-own:
+The two stages are also public, and each runs on its own:
 
-    AutoModelForImageTextToText.from_pretrained(repo, subfolder="weights/ocr")
-    AutoModelForObjectDetection.from_pretrained(repo, subfolder="weights/layout",
-                                                trust_remote_code=True)
+    IndicDocLayout(f"{repo}/weights/layout").detect("page.png")   # blocks and reading order
+    IndicBlockOCR(f"{repo}/weights/ocr").run("page.png", layout)  # layout may be your own
 
-The recognizer is a stock Qwen3.5 checkpoint and needs no custom code at all.
+``layout`` there can be a PageResult, a dict, or the path to a layout JSON file, so the stages
+compose across processes and you can correct a layout before transcribing it.
 """
 
 from __future__ import annotations
@@ -57,11 +56,12 @@ _preflight()
 
 # ruff: noqa: E402  -- the preflight has to run before transformers is imported, which is the
 # whole point of it; these imports pull transformers in transitively.
-from idp_offline import IndicBlockOCR as _BlockOCR
-from idp_offline import IndicDocLayout as _DocLayout
+from idp_offline import IndicBlockOCR, IndicDocLayout
 from idp_types import CropConfig, DedupConfig, LayoutConfig, RecognizerConfig, TableFormat
 
-__all__ = ["IndicDocParser"]
+#: The two stages are public: either runs on its own, and IndicBlockOCR accepts a layout you
+#: produced or corrected yourself.
+__all__ = ["IndicDocParser", "IndicDocLayout", "IndicBlockOCR"]
 
 
 class IndicDocParser:
@@ -100,7 +100,7 @@ class IndicDocParser:
     @property
     def layout(self):
         if self._layout is None:
-            self._layout = _DocLayout(
+            self._layout = IndicDocLayout(
                 ckpt=str(self.path / "weights" / "layout"),
                 config=self._layout_cfg,
                 dedup=self._dedup,
@@ -119,7 +119,7 @@ class IndicDocParser:
                 )
             from idp_recognizer import HfRecognizer
 
-            self._ocr = _BlockOCR(
+            self._ocr = IndicBlockOCR(
                 backend=HfRecognizer(
                     ckpt=str(self.path / "weights" / "ocr"),
                     config=self._rec_cfg,
