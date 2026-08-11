@@ -95,25 +95,17 @@ Punjabi, Assamese and Urdu. We are very excited to take this first step in suppo
 
 <h3 style="color:#F97316;">Installation</h3>
 
-Download the repo, then run its installer. It reads your driver and picks matching CUDA wheels.
-Activate your environment first, since it installs into whichever Python is active.
+The repo ships an installer that reads your driver and picks matching CUDA wheels. If you work in a
+virtual environment, it is worth activating it first, as the installer installs into whichever
+Python is active.
 
 ```bash
 IDP=$(python -c "from huggingface_hub import snapshot_download as d; print(d('bodhan-ai/indic-doc-parser'))")
 cd "$IDP" && ./install.sh
 ```
 
-Or by hand, if you would rather choose the wheels yourself:
-
-```bash
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124   # your CUDA line
-pip install -r requirements.txt
-```
-
-> Keep `torch` and `torchvision` in that one command. `torchvision` pins an exact `torch`, so
-> installing them separately lets pip pick a mismatched pair. A plain `pip install torch` also
-> takes the newest wheel, currently CUDA 13, which on an older driver initialises to CPU with
-> nothing but a warning. Use the index for *your* CUDA: `cu121`, `cu124`, `cu128`, `cu130`, `cpu`.
+It will use `uv` if that is available, and `pip` otherwise. Where running a shell script is not
+convenient, [Troubleshooting](#troubleshooting) lists the two commands it runs.
 
 <h3 style="color:#F97316;">Basic inference</h3>
 
@@ -128,32 +120,55 @@ from indic_doc_parser import IndicDocParser
 parser = IndicDocParser.from_pretrained(repo)
 
 page = parser.parse("page.png")
-page["markdown"]                            # reading-ordered Markdown
-page["blocks"]                              # [{order, label, type, bbox_xyxy, conf, text}, ...]
+print(page["markdown"])                     # reading-ordered Markdown
 ```
+
+`page` also carries the per-block detail, which you will usually want on disk:
+
+```python
+import json
+
+with open("page.json", "w", encoding="utf-8") as f:
+    json.dump(page, f, ensure_ascii=False, indent=2)
+```
+
+`ensure_ascii=False` keeps Indic text readable in the file rather than escaping it to `\uXXXX`.
 
 <h3 style="color:#F97316;">Layout only</h3>
 
 
-```python
-layout = parser.detect("page.png")          # {image, width, height, blocks}
-```
-
-It also needs neither a GPU nor `torchvision`. On CPU the layout stage takes about as long as on
-GPU, 7.8 seconds against 8.5 for the Example #1 page, so `IndicDocParser.from_pretrained(repo,
-device="cpu")` is a real option for layout work. The recognizer is a different matter. It runs on
-CPU but is far too slow to be practical.
-
-<h3 style="color:#F97316;">OCR Model</h3>
-
+Stage 1 on its own gives you the blocks and their reading order, without loading the recognizer:
 
 ```python
-from transformers import AutoModelForImageTextToText, AutoProcessor
+import json
 
-proc = AutoProcessor.from_pretrained(repo, subfolder="weights/ocr")
-rec = AutoModelForImageTextToText.from_pretrained(repo, subfolder="weights/ocr")
+layout = parser.detect("page.png")
+with open("layout.json", "w", encoding="utf-8") as f:
+    json.dump(layout, f, ensure_ascii=False, indent=2)
 ```
 
+```json
+{
+  "image": "sample1.png",
+  "width": 800,
+  "height": 1273,
+  "blocks": [
+    {"order": 0, "label": "Header", "type": "PageHeader",
+     "bbox_xyxy": [345.6, 51.7, 437.1, 114.7], "conf": 0.6},
+    {"order": 1, "label": "Page-number", "type": "PageNumber",
+     "bbox_xyxy": [367.8, 78.9, 413.2, 107.4], "conf": 0.748}
+  ]
+}
+```
+
+There is no `text` field here, because nothing has been transcribed yet. Edit this file if you want
+to correct a box or an order, then feed it to stage 2.
+
+<h3 style="color:#F97316;">Using either model on its own</h3>
+
+Both models are ordinary Hugging Face checkpoints, and both are finetunable with standard tooling.
+
+IndicDocLayout, the detector:
 
 ```python
 from idp_model_ppdoc import PPDocLayoutV3Trainable
@@ -161,7 +176,14 @@ from idp_model_ppdoc import PPDocLayoutV3Trainable
 model = PPDocLayoutV3Trainable.from_pretrained(f"{repo}/weights/layout")
 ```
 
-Both are finetunable with standard Hugging Face tooling.
+IndicBlockOCR, the recognizer. It is a stock Qwen3.5 checkpoint, so it needs no custom code:
+
+```python
+from transformers import AutoModelForImageTextToText, AutoProcessor
+
+proc = AutoProcessor.from_pretrained(repo, subfolder="weights/ocr")
+rec = AutoModelForImageTextToText.from_pretrained(repo, subfolder="weights/ocr")
+```
 
 ---
 
@@ -171,7 +193,7 @@ Both are finetunable with standard Hugging Face tooling.
 
 ```json
 {
-  "image": "gallery-1-english-math-ramanujan.png",
+  "image": "sample1.png",
   "width": 800,
   "height": 1273,
   "blocks": [
@@ -252,6 +274,19 @@ Needs reevaluation.
 <h2 id="troubleshooting" style="color:#F97316;">Troubleshooting</h2>
 
 Nearly every install problem is the torch/torchvision/CUDA triangle.
+
+**Installing without the script**, on Colab, Windows, or anywhere a shell script is awkward. These
+are the two commands `install.sh` runs:
+
+```bash
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124   # your CUDA line
+pip install -r requirements.txt
+```
+
+Keep `torch` and `torchvision` in that one command. `torchvision` pins an exact `torch`, so
+installing them separately lets pip pick a mismatched pair. A plain `pip install torch` also takes
+the newest wheel, currently CUDA 13, which on an older driver initialises to CPU with nothing but a
+warning. Use the index for *your* CUDA: `cu121`, `cu124`, `cu128`, `cu130`, or `cpu`.
 
 **`ImportError` after `ImportError`, or complaints that torchvision is too old.** `torchvision`
 pins an exact `torch`, so if the two were installed separately pip may have paired them wrongly.
