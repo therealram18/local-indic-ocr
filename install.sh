@@ -15,6 +15,19 @@ set -euo pipefail
 cd "$(dirname "$0")"
 PY=${PYTHON:-python3}
 
+# `uv venv` creates environments without pip, so `$PY -m pip` is not a safe assumption. Prefer
+# whatever the environment actually has; uv is also just faster.
+if command -v uv >/dev/null 2>&1; then
+    pip_install() { uv pip install --python "$PY" "$@"; }
+elif "$PY" -m pip --version >/dev/null 2>&1; then
+    pip_install() { "$PY" -m pip install "$@"; }
+elif "$PY" -m ensurepip --upgrade >/dev/null 2>&1; then
+    pip_install() { "$PY" -m pip install "$@"; }
+else
+    echo "no installer found for $PY -- install pip (python -m ensurepip) or uv, then re-run" >&2
+    exit 1
+fi
+
 detect_cuda() {
     command -v nvidia-smi >/dev/null 2>&1 || { echo cpu; return; }
     local v
@@ -36,10 +49,10 @@ echo "==> target: $CUDA"
 [ "$CUDA" = cpu ] && echo "    (no GPU detected -- layout runs fine on CPU, the recognizer is slow)"
 
 echo "==> torch + torchvision, together, from $INDEX"
-$PY -m pip install torch torchvision --index-url "$INDEX"
+pip_install torch torchvision --index-url "$INDEX"
 
 echo "==> everything else"
-$PY -m pip install -r requirements.txt
+pip_install -r requirements.txt
 
 echo "==> checking"
 $PY - <<'PY'

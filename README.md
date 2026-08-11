@@ -50,17 +50,17 @@ Detected blocks with their reading order on the left, the transcription on the r
 
 <div align="center">
   <img src="assets/gallery-1-english-math-ramanujan.png" alt="A page from Ramanujan's notebooks: text and display equations detected in reading order, with the transcription rendering the mathematics as LaTeX" width="100%">
-  <p><b>Example #1 — English page with dense mathematics.</b></p>
+  <p><b>Example #1. English page with dense mathematics.</b></p>
 </div>
 
 <div align="center">
   <img src="assets/gallery-2-telugu-novel.png" alt="A printed Telugu novel page: paragraph blocks and a page number detected and numbered in reading order, with the Telugu transcription beside it" width="100%">
-  <p><b>Example #2 — Printed Telugu page.</b></p>
+  <p><b>Example #2. Printed Telugu page.</b></p>
 </div>
 
 <div align="center">
   <img src="assets/cand-hindi-maths-g10-6pr6eq-7dcd5d95-p20.png" alt="A handwritten Hindi maths exercise on ruled paper: alternating Equation and Paragraph blocks detected in reading order, with the transcription rendering the algebra as LaTeX" width="100%">
-  <p><b>Example #3 — Handwritten Hindi maths.</b></p>
+  <p><b>Example #3. Handwritten Hindi maths.</b></p>
 </div>
 
 ---
@@ -87,7 +87,7 @@ Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu.
 
 **Handwriting** recognition is supported for English and
 12 languages: Hindi, Bengali, Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Odia,
-Punjabi, Assamese and Urdu. We are very excited to take this first step in supporting handwriting recognition across many Indian languages, and are working on improving quality further, and adding support for other languages as well, in next iterations.
+Punjabi, Assamese and Urdu. We are very excited to take this first step in supporting handwriting recognition across many Indian languages, and are working on improving quality further, and adding support for other languages as well.
 
 ---
 
@@ -95,35 +95,25 @@ Punjabi, Assamese and Urdu. We are very excited to take this first step in suppo
 
 <h3 style="color:#F97316;">Installation</h3>
 
-Download the repo first, then run its installer — it picks the CUDA wheels that match your driver:
+Download the repo, then run its installer. It reads your driver and picks matching CUDA wheels.
+Activate your environment first, since it installs into whichever Python is active.
 
 ```bash
-python -c "from huggingface_hub import snapshot_download; print(snapshot_download('bodhan-ai/indic-doc-parser'))"
-cd <the path it printed> && ./install.sh
+IDP=$(python -c "from huggingface_hub import snapshot_download as d; print(d('bodhan-ai/indic-doc-parser'))")
+cd "$IDP" && ./install.sh
 ```
 
-Or by hand, in **two** commands:
+Or by hand, if you would rather choose the wheels yourself:
 
 ```bash
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124   # your CUDA line
-pip install transformers accelerate pillow numpy huggingface_hub
+pip install -r requirements.txt
 ```
 
-> **The first command is one command on purpose.** `torchvision` pins an exact `torch`, so
-> installing them separately lets pip pick a mismatched pair. And plain `pip install torch` takes
-> the newest wheel — currently CUDA 13 — which on an older driver initialises to CPU with only a
-> warning, giving you a working install that never touches the GPU. Use the index for *your* CUDA:
-> `cu121`, `cu124`, `cu128`, `cu130`, or `cpu`.
-
-**Verified configurations**
-
-| CUDA | torch | torchvision | transformers | numpy |
-| --- | --- | --- | --- | --- |
-| 12.4 | 2.6.0 | 0.21.0 | 5.15.0 | 2.5.2 |
-| 12.9 | 2.11.0 | 0.26.0 | 5.14.1 | 2.3.5 |
-
-Both parse the Example #1 page identically. The span between them is wide, so anything in range
-should work — these are the two we ran end to end.
+> Keep `torch` and `torchvision` in that one command. `torchvision` pins an exact `torch`, so
+> installing them separately lets pip pick a mismatched pair. A plain `pip install torch` also
+> takes the newest wheel, currently CUDA 13, which on an older driver initialises to CPU with
+> nothing but a warning. Use the index for *your* CUDA: `cu121`, `cu124`, `cu128`, `cu130`, `cpu`.
 
 <h3 style="color:#F97316;">Basic inference</h3>
 
@@ -136,15 +126,7 @@ sys.path.insert(0, repo)                    # the code ships in the repo
 from indic_doc_parser import IndicDocParser
 
 parser = IndicDocParser.from_pretrained(repo)
-print(parser("page.png"))                   # markdown
-```
 
-`sys.path.insert` is needed because `snapshot_download` returns a cache directory, which is not
-importable on its own.
-
-For the per-block JSON as well as the markdown:
-
-```python
 page = parser.parse("page.png")
 page["markdown"]                            # reading-ordered Markdown
 page["blocks"]                              # [{order, label, type, bbox_xyxy, conf, text}, ...]
@@ -158,8 +140,8 @@ layout = parser.detect("page.png")          # {image, width, height, blocks}
 ```
 
 It also needs neither a GPU nor `torchvision`. On CPU the layout stage takes about as long as on
-GPU — 7.8 s versus 8.5 s for the Example #1 page — so `IndicDocParser.from_pretrained(repo,
-device="cpu")` is a real option for layout work. The recognizer is a different matter: it runs on
+GPU, 7.8 seconds against 8.5 for the Example #1 page, so `IndicDocParser.from_pretrained(repo,
+device="cpu")` is a real option for layout work. The recognizer is a different matter. It runs on
 CPU but is far too slow to be practical.
 
 <h3 style="color:#F97316;">OCR Model</h3>
@@ -185,11 +167,30 @@ Both are finetunable with standard Hugging Face tooling.
 
 <h2 id="output" style="color:#F97316;">Output</h2>
 
+`parser.parse(page)` returns the page and its blocks in reading order:
+
+```json
+{
+  "image": "gallery-1-english-math-ramanujan.png",
+  "width": 800,
+  "height": 1273,
+  "blocks": [
+    {"order": 0, "label": "Header", "type": "PageHeader",
+     "bbox_xyxy": [345.6, 51.7, 437.1, 114.7], "conf": 0.6, "text": ""},
+    {"order": 1, "label": "Page-number", "type": "PageNumber",
+     "bbox_xyxy": [367.8, 78.9, 413.2, 107.4], "conf": 0.747, "text": "229"},
+    {"order": 2, "label": "Paragraph", "type": "Text",
+     "bbox_xyxy": [77.9, 121.3, 711.8, 199.4], "conf": 0.863,
+     "text": "Thus we see that, if we can prove that twice the L.H.S. of (30) ..."}
+  ]
+}
+```
+
 | field | meaning |
 | --- | --- |
 | `order` | reading-order rank, 0-based and gap-free |
 | `label` | the raw IndicDocLayout class (37-class taxonomy) |
-| `type` | coarse pipeline category — `Text`, `Table`, `Equation`, `Title`, … |
+| `type` | coarse pipeline category: `Text`, `Table`, `Equation`, `Title`, ... |
 | `bbox_xyxy` | pixel box `[x0, y0, x1, y1]` |
 | `conf` | detection confidence |
 | `text` | transcription; `""` for blocks not sent to the recognizer |
@@ -198,7 +199,25 @@ Both are finetunable with standard Hugging Face tooling.
 they remain in the JSON with `text: ""`, so you can see what was detected and where. Page numbers
 and other margin text like folio *are* transcribed.
 
-**Tables are HTML by default.** Pass `table_format="markdown"` to `from_pretrained` for Markdown table output.
+<h3 style="color:#F97316;">Table format</h3>
+
+Tables come back as HTML by default. Choose the format when you construct the parser:
+
+```python
+parser = IndicDocParser.from_pretrained(repo)                            # HTML (default)
+parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markdown
+```
+
+HTML is the default because Markdown cannot express everything these tables contain. A real cell
+from a Bengali arithmetic exercise carries a line break inside it:
+
+```html
+<th>কিগ্রা সমস্যাটি হবে,<br/>চালের পরিমাণ<br/>(কিগ্রা)</th>
+```
+
+Rendered as GitHub-flavored Markdown, that cell collapses onto one line, and merged cells lose
+`colspan` and `rowspan` entirely. The structure disappears without any warning. If your tables are
+flat, Markdown is easier to read and post-process, so choose it deliberately.
 
 ---
 
@@ -254,7 +273,7 @@ import torch; print(torch.__version__, torch.cuda.is_available())
 the layout stage does not. Install it *together with* torch, from the same index.
 
 **`RTDetrHungarianMatcher requires the scipy library`.** You are on an old revision of this repo.
-Update — inference no longer builds the matcher.
+Update to the current revision, which no longer builds the matcher during inference.
 
 ---
 
