@@ -132,41 +132,9 @@ with open("page.json", "w", encoding="utf-8") as f:
     json.dump(page, f, ensure_ascii=False, indent=2)
 ```
 
-
-<h3 style="color:#F97316;">Layout only</h3>
-
-
-Stage 1 on its own gives you the blocks and their reading order, without loading the recognizer:
-
-```python
-import json
-
-layout = parser.detect("page.png")
-with open("layout.json", "w", encoding="utf-8") as f:
-    json.dump(layout, f, ensure_ascii=False, indent=2)
-```
-
-```json
-{
-  "image": "sample1.png",
-  "width": 800,
-  "height": 1273,
-  "blocks": [
-    {"order": 0, "label": "Header", "type": "PageHeader",
-     "bbox_xyxy": [345.6, 51.7, 437.1, 114.7], "conf": 0.6},
-    {"order": 1, "label": "Page-number", "type": "PageNumber",
-     "bbox_xyxy": [367.8, 78.9, 413.2, 107.4], "conf": 0.748}
-  ]
-}
-```
-
-There is no `text` field here, because nothing has been transcribed yet. Edit this file if you want
-to correct a box or an order, then feed it to stage 2.
-
 <h3 style="color:#F97316;">Running one stage at a time</h3>
 
-Each stage is a class of its own, so you can run them separately, in different processes, or on
-different machines:
+To decompose into 2 separate stages:
 
 ```python
 from indic_doc_parser import IndicDocLayout, IndicBlockOCR
@@ -175,10 +143,7 @@ layout = IndicDocLayout(f"{repo}/weights/layout").detect("page.png")
 page = IndicBlockOCR(f"{repo}/weights/ocr").run("page.png", layout)
 ```
 
-`run()` takes a layout object, a dict, or the path to a layout JSON file. That last form is the
-useful one: detect a page, correct a box or a reading-order rank in the JSON, then transcribe the
-corrected version. It also means you can swap in a layout from a different detector entirely, as
-long as it carries the same fields.
+`run()` takes a layout object, a dict, or the path to a layout JSON file.
 
 ---
 
@@ -225,16 +190,66 @@ parser = IndicDocParser.from_pretrained(repo)                            # HTML 
 parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markdown
 ```
 
-HTML is the default because Markdown cannot express everything these tables contain. A real cell
-from a Bengali arithmetic exercise carries a line break inside it:
+A newspaper table and what the default HTML output looks like:
 
-```html
-<th>কিগ্রা সমস্যাটি হবে,<br/>চালের পরিমাণ<br/>(কিগ্রা)</th>
-```
+<table>
+<tr>
+<td width="42%" valign="top" align="center">
+<img src="assets/table-example.png" alt="A newspaper table of bowling statistics with a dark title banner and yellow highlighted cells" width="100%">
+</td>
+<td width="58%" valign="top">
+<pre><code>&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th colspan=&quot;7&quot;&gt;TERRIFIC TRIO: TOP INDIAN PACERS IN WORLD CUP&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Bowler&lt;/th&gt;
+&lt;th&gt;M&lt;/th&gt;
+&lt;th&gt;Wkts&lt;/th&gt;
+&lt;th&gt;Ave&lt;/th&gt;
+&lt;th&gt;Best&lt;/th&gt;
+&lt;th&gt;SR&lt;/th&gt;
+&lt;th&gt;ER&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Bumrah&lt;/td&gt;
+&lt;td&gt;7&lt;/td&gt;
+&lt;td&gt;15&lt;/td&gt;
+&lt;td&gt;14.60&lt;/td&gt;
+&lt;td&gt;4/39&lt;/td&gt;
+&lt;td&gt;23.5&lt;/td&gt;
+&lt;td&gt;3.72&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Shami&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;14&lt;/td&gt;
+&lt;td&gt;6.71&lt;/td&gt;
+&lt;td&gt;5/18&lt;/td&gt;
+&lt;td&gt;9.4&lt;/td&gt;
+&lt;td&gt;4.27&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Siraj&lt;/td&gt;
+&lt;td&gt;7&lt;/td&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;34.00&lt;/td&gt;
+&lt;td&gt;3/16&lt;/td&gt;
+&lt;td&gt;37.6&lt;/td&gt;
+&lt;td&gt;5.41&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+</td>
+</tr>
+</table>
 
-Rendered as GitHub-flavored Markdown, that cell collapses onto one line, and merged cells lose
-`colspan` and `rowspan` entirely. The structure disappears without any warning. If your tables are
-flat, Markdown is easier to read and post-process, so choose it deliberately.
+The title banner is one cell spanning seven columns, which is why HTML is the default. Markdown has
+no `colspan`, so the same banner comes back repeated once per column and the real header row is
+pushed into the body. Every data cell survives either way; what you lose is the structure.
 
 ---
 
