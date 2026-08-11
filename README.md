@@ -25,8 +25,9 @@ metrics: [wer]
 
 </div>
 
-**Multilingual document parsing for English and 22 Indian languages. Given a document page as input, get back reading-ordered Markdown plus per-block JSON, with math as LaTeX and tables as HTML or
-Markdown.**
+**Document parsing for English and 22 Indian languages, printed and handwritten.** A page image
+in; reading-ordered Markdown out, with math as LaTeX and tables as HTML or Markdown, plus
+per-block JSON.
 
 <div align="center">
 
@@ -40,6 +41,27 @@ two-stage parser: **IndicDocLayout** finds the blocks on the page and orders the
 
 Since the stages are separate, the layout module can be used as is or swapped by a different one, or
 run only the block-level text recognizer. The intermediate step is a structured JSON file passed between the two.
+
+---
+
+<h2 id="examples" style="color:#F97316;">Examples</h2>
+
+Detected blocks with their reading order on the left, the transcription on the right.
+
+<div align="center">
+  <img src="assets/gallery-1-english-math-ramanujan.png" alt="A page from Ramanujan's notebooks: text and display equations detected in reading order, with the transcription rendering the mathematics as LaTeX" width="100%">
+  <p><b>Example #1 — English page with dense mathematics.</b></p>
+</div>
+
+<div align="center">
+  <img src="assets/gallery-2-telugu-novel.png" alt="A printed Telugu novel page: paragraph blocks and a page number detected and numbered in reading order, with the Telugu transcription beside it" width="100%">
+  <p><b>Example #2 — Printed Telugu page.</b></p>
+</div>
+
+<div align="center">
+  <img src="assets/cand-hindi-maths-g10-6pr6eq-7dcd5d95-p20.png" alt="A handwritten Hindi maths exercise on ruled paper: alternating Equation and Paragraph blocks detected in reading order, with the transcription rendering the algebra as LaTeX" width="100%">
+  <p><b>Example #3 — Handwritten Hindi maths.</b></p>
+</div>
 
 ---
 
@@ -66,29 +88,6 @@ Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu.
 **Handwriting** recognition is supported for English and
 12 languages: Hindi, Bengali, Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Odia,
 Punjabi, Assamese and Urdu. We are very excited to take this first step in supporting handwriting recognition across many Indian languages, and are working on improving quality further, and adding support for other languages as well, in next iterations.
-
----
-
-<h2 id="examples" style="color:#F97316;">Examples</h2>
-
-Detected blocks with their reading order on the left, the transcription on the right.
-
-<div align="center">
-  <img src="assets/gallery-1-english-math-ramanujan.png" alt="A page from Ramanujan's notebooks: text and display equations detected in reading order, with the transcription rendering the mathematics as LaTeX" width="100%">
-</div>
-
-**Example #1 — English page with dense mathematics.** 
-
-<div align="center">
-  <img src="assets/gallery-2-telugu-novel.png" alt="A printed Telugu novel page: paragraph blocks and a page number detected and numbered in reading order, with the Telugu transcription beside it" width="100%">
-</div>
-
-**Example #2 — Printed Telugu page.** 
-<div align="center">
-  <img src="assets/cand-hindi-maths-g10-6pr6eq-7dcd5d95-p20.png" alt="A handwritten Hindi maths exercise on ruled paper: alternating Equation and Paragraph blocks detected in reading order, with the transcription rendering the algebra as LaTeX" width="100%">
-</div>
-
-**Example #3 — Handwritten Hindi maths.** 
 
 ---
 
