@@ -26,8 +26,37 @@ The recognizer is a stock Qwen3.5 checkpoint and needs no custom code at all.
 
 from __future__ import annotations
 
+import importlib
 from pathlib import Path
 
+
+def _preflight() -> None:
+    """One clear error instead of a cascade of ImportErrors from inside transformers.
+
+    Every failure here is one someone has actually hit: a torch built for a CUDA line the driver
+    cannot run (silently CPU), a torchvision that does not match its torch, or a transformers
+    older than PPDocLayoutV3.
+    """
+    fix = "./install.sh  (or see the Installation section of the model card)"
+    for name, floor in (("torch", (2, 4)), ("transformers", (5, 7))):
+        try:
+            mod = importlib.import_module(name)
+        except ImportError:
+            raise ImportError(f"IndicDocParser needs {name}. Run: {fix}") from None
+        got = tuple(int(p) for p in mod.__version__.split(".")[:2] if p.isdigit())
+        if got < floor:
+            raise ImportError(
+                f"IndicDocParser needs {name}>={'.'.join(map(str, floor))}, "
+                f"found {mod.__version__}. Run: {fix}"
+            )
+    # torchvision is stage 2 only, so its absence is not fatal here -- the layout stage runs
+    # without it. It is checked where the recognizer is built.
+
+
+_preflight()
+
+# ruff: noqa: E402  -- the preflight has to run before transformers is imported, which is the
+# whole point of it; these imports pull transformers in transitively.
 from idp_offline import IndicBlockOCR as _BlockOCR
 from idp_offline import IndicDocLayout as _DocLayout
 from idp_types import CropConfig, DedupConfig, LayoutConfig, RecognizerConfig, TableFormat
@@ -81,6 +110,13 @@ class IndicDocParser:
     @property
     def recognizer(self):
         if self._ocr is None:
+            if importlib.util.find_spec("torchvision") is None:
+                raise ImportError(
+                    "The recognizer needs torchvision (its image processor uses it); the layout "
+                    "stage does not, so detect() still works. Install it together with torch, "
+                    "from the same index -- torchvision pins an exact torch version. See "
+                    "./install.sh"
+                )
             from idp_recognizer import HfRecognizer
 
             self._ocr = _BlockOCR(

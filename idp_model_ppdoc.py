@@ -36,7 +36,11 @@ class PPDocLayoutV3Trainable(PPDocLayoutV3ForObjectDetection):
     def __init__(self, config):
         super().__init__(config)
         self.lambda_order = getattr(config, "lambda_order", 5.0)
-        self._matcher = RTDetrHungarianMatcher(config)
+        # Built on first use, not here: the matcher is training-only, and constructing it calls
+        # requires_backends(["scipy"]). Eagerly, that makes scipy a hard dependency of merely
+        # LOADING the detector -- so inference-only installs fail on import with a library they
+        # will never call. It holds no parameters, so this does not change the state dict.
+        self._matcher = None
         self.loss_type = "RTDetrForObjectDetection"  # base RT-DETR loss over its outputs
 
     @classmethod
@@ -79,6 +83,8 @@ class PPDocLayoutV3Trainable(PPDocLayoutV3ForObjectDetection):
         return model
 
     def _order_loss(self, order_logits, logits, pred_boxes, labels):
+        if self._matcher is None:
+            self._matcher = RTDetrHungarianMatcher(self.config)  # needs scipy; training only
         idx = self._matcher({"logits": logits, "pred_boxes": pred_boxes}, labels)
         tot, n = 0.0, 0
         for b, (src, tgt) in enumerate(idx):

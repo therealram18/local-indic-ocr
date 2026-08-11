@@ -95,10 +95,35 @@ Punjabi, Assamese and Urdu. We are very excited to take this first step in suppo
 
 <h3 style="color:#F97316;">Installation</h3>
 
+Download the repo first, then run its installer — it picks the CUDA wheels that match your driver:
+
 ```bash
-pip install torch transformers pillow accelerate huggingface_hub
+python -c "from huggingface_hub import snapshot_download; print(snapshot_download('bodhan-ai/indic-doc-parser'))"
+cd <the path it printed> && ./install.sh
 ```
 
+Or by hand, in **two** commands:
+
+```bash
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124   # your CUDA line
+pip install transformers accelerate pillow numpy huggingface_hub
+```
+
+> **The first command is one command on purpose.** `torchvision` pins an exact `torch`, so
+> installing them separately lets pip pick a mismatched pair. And plain `pip install torch` takes
+> the newest wheel — currently CUDA 13 — which on an older driver initialises to CPU with only a
+> warning, giving you a working install that never touches the GPU. Use the index for *your* CUDA:
+> `cu121`, `cu124`, `cu128`, `cu130`, or `cpu`.
+
+**Verified configurations**
+
+| CUDA | torch | torchvision | transformers | numpy |
+| --- | --- | --- | --- | --- |
+| 12.4 | 2.6.0 | 0.21.0 | 5.15.0 | 2.5.2 |
+| 12.9 | 2.11.0 | 0.26.0 | 5.14.1 | 2.3.5 |
+
+Both parse the Example #1 page identically. The span between them is wide, so anything in range
+should work — these are the two we ran end to end.
 
 <h3 style="color:#F97316;">Basic inference</h3>
 
@@ -131,6 +156,11 @@ page["blocks"]                              # [{order, label, type, bbox_xyxy, c
 ```python
 layout = parser.detect("page.png")          # {image, width, height, blocks}
 ```
+
+It also needs neither a GPU nor `torchvision`. On CPU the layout stage takes about as long as on
+GPU — 7.8 s versus 8.5 s for the Example #1 page — so `IndicDocParser.from_pretrained(repo,
+device="cpu")` is a real option for layout work. The recognizer is a different matter: it runs on
+CPU but is far too slow to be practical.
 
 <h3 style="color:#F97316;">OCR Model</h3>
 
@@ -197,6 +227,34 @@ Needs reevaluation.
 <h2 id="limitations" style="color:#F97316;">Limitations</h2>
 
 - We are currently working on better support for **complex multi-column reading order**. Additionally, we are working on better support for **Handwriting** across children versus adult handwriting, and also extending support to other Indic languages.
+
+---
+
+<h2 id="troubleshooting" style="color:#F97316;">Troubleshooting</h2>
+
+Nearly every install problem is the torch/torchvision/CUDA triangle.
+
+**`ImportError` after `ImportError`, or complaints that torchvision is too old.** `torchvision`
+pins an exact `torch`, so if the two were installed separately pip may have paired them wrongly.
+Reinstall both in one command, from one index:
+
+```bash
+pip install --force-reinstall torch torchvision --index-url https://download.pytorch.org/whl/cu124
+```
+
+**`CUDA initialization: The NVIDIA driver on your system is too old`, then everything runs on CPU.**
+Plain `pip install torch` fetched a wheel built for a newer CUDA than your driver. Check with
+`nvidia-smi`, then reinstall from the matching index. Verify with:
+
+```python
+import torch; print(torch.__version__, torch.cuda.is_available())
+```
+
+**`Qwen3VLVideoProcessor requires the Torchvision library`.** The recognizer needs `torchvision`;
+the layout stage does not. Install it *together with* torch, from the same index.
+
+**`RTDetrHungarianMatcher requires the scipy library`.** You are on an old revision of this repo.
+Update — inference no longer builds the matcher.
 
 ---
 
