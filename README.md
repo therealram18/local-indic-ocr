@@ -190,7 +190,7 @@ parser = IndicDocParser.from_pretrained(repo)                            # HTML 
 parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markdown
 ```
 
-A newspaper table and what the default HTML output looks like:
+Sample HTML output:
 
 <table>
 <tr>
@@ -198,58 +198,56 @@ A newspaper table and what the default HTML output looks like:
 <img src="assets/table-example.png" alt="A newspaper table of bowling statistics with a dark title banner and yellow highlighted cells" width="100%">
 </td>
 <td width="58%" valign="top">
-<pre><code>&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th colspan=&quot;7&quot;&gt;TERRIFIC TRIO: TOP INDIAN PACERS IN WORLD CUP&lt;/th&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;th&gt;Bowler&lt;/th&gt;
-&lt;th&gt;M&lt;/th&gt;
-&lt;th&gt;Wkts&lt;/th&gt;
-&lt;th&gt;Ave&lt;/th&gt;
-&lt;th&gt;Best&lt;/th&gt;
-&lt;th&gt;SR&lt;/th&gt;
-&lt;th&gt;ER&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Bumrah&lt;/td&gt;
-&lt;td&gt;7&lt;/td&gt;
-&lt;td&gt;15&lt;/td&gt;
-&lt;td&gt;14.60&lt;/td&gt;
-&lt;td&gt;4/39&lt;/td&gt;
-&lt;td&gt;23.5&lt;/td&gt;
-&lt;td&gt;3.72&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Shami&lt;/td&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;14&lt;/td&gt;
-&lt;td&gt;6.71&lt;/td&gt;
-&lt;td&gt;5/18&lt;/td&gt;
-&lt;td&gt;9.4&lt;/td&gt;
-&lt;td&gt;4.27&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Siraj&lt;/td&gt;
-&lt;td&gt;7&lt;/td&gt;
-&lt;td&gt;9&lt;/td&gt;
-&lt;td&gt;34.00&lt;/td&gt;
-&lt;td&gt;3/16&lt;/td&gt;
-&lt;td&gt;37.6&lt;/td&gt;
-&lt;td&gt;5.41&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;</code></pre>
+
+<table>
+<thead>
+<tr>
+<th colspan="7">TERRIFIC TRIO: TOP INDIAN PACERS IN WORLD CUP</th>
+</tr>
+<tr>
+<th>Bowler</th>
+<th>M</th>
+<th>Wkts</th>
+<th>Ave</th>
+<th>Best</th>
+<th>SR</th>
+<th>ER</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bumrah</td>
+<td>7</td>
+<td>15</td>
+<td>14.60</td>
+<td>4/39</td>
+<td>23.5</td>
+<td>3.72</td>
+</tr>
+<tr>
+<td>Shami</td>
+<td>3</td>
+<td>14</td>
+<td>6.71</td>
+<td>5/18</td>
+<td>9.4</td>
+<td>4.27</td>
+</tr>
+<tr>
+<td>Siraj</td>
+<td>7</td>
+<td>9</td>
+<td>34.00</td>
+<td>3/16</td>
+<td>37.6</td>
+<td>5.41</td>
+</tr>
+</tbody>
+</table>
+
 </td>
 </tr>
 </table>
-
-The title banner is one cell spanning seven columns, which is why HTML is the default. Markdown has
-no `colspan`, so the same banner comes back repeated once per column and the real header row is
-pushed into the body. Every data cell survives either way; what you lose is the structure.
 
 ---
 
@@ -277,7 +275,8 @@ Needs reevaluation.
 
 <h2 id="limitations" style="color:#F97316;">Limitations</h2>
 
-- We are currently working on better support for **complex multi-column reading order**. Additionally, we are working on better support for **Handwriting** across children versus adult handwriting, and also extending support to other Indic languages.
+We are currently working on improving support for **complex, multi-column reading orders**. We are also enhancing **handwriting recognition**, with a focus on handling the distinct characteristics of **children’s and adults’ handwriting**, while extending support to additional **Indic languages**.
+
 
 
 ---
@@ -290,9 +289,8 @@ Latency and throughput numbers to follow.
 
 <h2 id="license" style="color:#F97316;">License</h2>
 
-**Apache 2.0**, inherited cleanly from everything it is built on: PP-DocLayoutV3 (Apache 2.0),
-Qwen3.5 (Apache 2.0), and the Sarvam-30B tokenizer (Apache 2.0). You may use, modify, finetune
-and redistribute, with attribution and a copy of the licence.
+**Apache 2.0**, inherited cleanly from all of its underlying components: PP-DocLayoutV3 (Apache 2.0), Qwen3.5 (Apache 2.0), and the Sarvam-30B tokenizer (Apache 2.0). You may use, modify, fine-tune, and redistribute the model, subject to the terms of the Apache 2.0 License, including appropriate attribution and a copy of the license.
+
 
 ---
 
