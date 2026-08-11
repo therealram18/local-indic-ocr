@@ -61,7 +61,7 @@ from idp_types import CropConfig, DedupConfig, LayoutConfig, RecognizerConfig, T
 
 #: The two stages are public: either runs on its own, and IndicBlockOCR accepts a layout you
 #: produced or corrected yourself.
-__all__ = ["IndicDocParser", "IndicDocLayout", "IndicBlockOCR"]
+__all__ = ["IndicBlockOCR", "IndicDocLayout", "IndicDocParser"]
 
 
 class IndicDocParser:
