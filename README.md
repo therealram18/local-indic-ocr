@@ -230,7 +230,7 @@ Latency and throughput numbers to follow.
 
 <h2 id="license" style="color:#F97316;">License</h2>
 
-**Apache 2.0**, inherited cleanly from all of its underlying components: PP-DocLayoutV3 (Apache 2.0), Qwen3.5 (Apache 2.0), and the Sarvam-30B tokenizer (Apache 2.0). You may use, modify, fine-tune, and redistribute the model, subject to the terms of the Apache 2.0 License, including appropriate attribution and a copy of the license.
+**Apache 2.0**, inherited from all of its underlying components: PP-DocLayoutV3 (Apache 2.0), Qwen3.5 (Apache 2.0), and the Sarvam-30B tokenizer (Apache 2.0). You may use, modify, fine-tune, and redistribute the model, subject to the terms of the Apache 2.0 License, including appropriate attribution and a copy of the license.
 
 
 ---
