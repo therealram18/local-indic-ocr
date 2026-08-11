@@ -49,7 +49,7 @@ run only the block-level text recognizer. The intermediate step is a structured 
 | --- | --- | --- |
 | **Role** | detect blocks + reading order | transcribe each block |
 | **Architecture** | PP-DocLayoutV3 (RT-DETR) for layout detection with an integrated reading-order head | Qwen3.5 for text recognition |
-| **Parameters** | ~33 M | ~0.8 B |
+| **Parameters** | 33 M | 0.8 B |
 | **Precision** | fp32 | bf16 |
 | **In this repo** | `weights/layout` (133 MB) | `weights/ocr` (1.7 GB) |
 
@@ -66,6 +66,33 @@ Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu.
 **Handwriting** recognition is supported for English and
 12 languages: Hindi, Bengali, Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Odia,
 Punjabi, Assamese and Urdu. We are very excited to take this first step in supporting handwriting recognition across many Indian languages, and are working on improving quality further, and adding support for other languages as well, in next iterations.
+
+---
+
+<h2 id="examples" style="color:#F97316;">Examples</h2>
+
+Detected blocks with their reading order on the left, the transcription on the right.
+
+<div align="center">
+  <img src="assets/gallery-2-telugu-novel.png" alt="A printed Telugu novel page: paragraph blocks and a page number detected and numbered in reading order, with the Telugu transcription beside it" width="100%">
+</div>
+
+**Printed Telugu.** Every paragraph is its own block, and the page number in the header is
+transcribed rather than dropped.
+
+<div align="center">
+  <img src="assets/cand-hindi-maths-g10-6pr6eq-7dcd5d95-p20.png" alt="A handwritten Hindi maths exercise on ruled paper: alternating Equation and Paragraph blocks detected in reading order, with the transcription rendering the algebra as LaTeX" width="100%">
+</div>
+
+**Handwritten Hindi maths.** Equations and prose alternate down the page; the algebra comes back as
+LaTeX and the Devanagari as text, interleaved in the order they were written.
+
+<div align="center">
+  <img src="assets/gallery-1-english-math-ramanujan.png" alt="A page from Ramanujan's notebooks: text and display equations detected in reading order, with the transcription rendering the mathematics as LaTeX" width="100%">
+</div>
+
+**English with dense mathematics.** Display equations are separated from the surrounding prose and
+returned as LaTeX.
 
 ---
 
