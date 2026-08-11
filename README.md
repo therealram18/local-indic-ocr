@@ -48,7 +48,7 @@ run only the block-level text recognizer. The intermediate step is a structured 
 | | IndicDocLayout | IndicBlockOCR |
 | --- | --- | --- |
 | **Role** | detect blocks + reading order | transcribe each block |
-| **Architecture** | PP-DocLayoutV3 (RT-DETR) for layout detection with an integrated reading-order head | Qwen3.5 for text recognition |
+| **Architecture** | PP-DocLayoutV3 (RT-DETR) for layout detection and reading order | Qwen3.5 for text recognition |
 | **Parameters** | 33 M | 0.8 B |
 | **Precision** | fp32 | bf16 |
 | **In this repo** | `weights/layout` (133 MB) | `weights/ocr` (1.7 GB) |
@@ -59,7 +59,7 @@ IndicBlockOCR is trained using the **Sarvam-30B tokenizer**, which has a large v
 
 <h2 id="supported-languages" style="color:#F97316;">Supported languages</h2>
 
-**Printed** page recognition is  supported across English and the 22 constitutionally recognised Indian languages: Assamese, Bengali, Bodo, Dogri,
+**Printed** page recognition is supported across English and the 22 constitutionally recognised Indian languages: Assamese, Bengali, Bodo, Dogri,
 Gujarati, Hindi, Kannada, Kashmiri, Konkani, Maithili, Malayalam, Manipuri, Marathi, Nepali,
 Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu.
 
@@ -89,7 +89,6 @@ Detected blocks with their reading order on the left, the transcription on the r
 </div>
 
 **Example #3 — Handwritten Hindi maths.** 
-(Handwriting recognition is a feature we are actively working on improving in our models.)
 
 ---
 
@@ -136,7 +135,6 @@ layout = parser.detect("page.png")          # {image, width, height, blocks}
 
 <h3 style="color:#F97316;">OCR Model</h3>
 
-The recognizer has been trained for strong Indic support on printed and handwritten blocks of text:
 
 ```python
 from transformers import AutoModelForImageTextToText, AutoProcessor
