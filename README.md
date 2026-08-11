@@ -74,25 +74,22 @@ Punjabi, Assamese and Urdu. We are very excited to take this first step in suppo
 Detected blocks with their reading order on the left, the transcription on the right.
 
 <div align="center">
+  <img src="assets/gallery-1-english-math-ramanujan.png" alt="A page from Ramanujan's notebooks: text and display equations detected in reading order, with the transcription rendering the mathematics as LaTeX" width="100%">
+</div>
+
+**Example #1 — English page with dense mathematics.** 
+
+<div align="center">
   <img src="assets/gallery-2-telugu-novel.png" alt="A printed Telugu novel page: paragraph blocks and a page number detected and numbered in reading order, with the Telugu transcription beside it" width="100%">
 </div>
 
-**Printed Telugu.** Every paragraph is its own block, and the page number in the header is
-transcribed rather than dropped.
-
+**Example #2 — Printed Telugu page.** 
 <div align="center">
   <img src="assets/cand-hindi-maths-g10-6pr6eq-7dcd5d95-p20.png" alt="A handwritten Hindi maths exercise on ruled paper: alternating Equation and Paragraph blocks detected in reading order, with the transcription rendering the algebra as LaTeX" width="100%">
 </div>
 
-**Handwritten Hindi maths.** Equations and prose alternate down the page; the algebra comes back as
-LaTeX and the Devanagari as text, interleaved in the order they were written.
-
-<div align="center">
-  <img src="assets/gallery-1-english-math-ramanujan.png" alt="A page from Ramanujan's notebooks: text and display equations detected in reading order, with the transcription rendering the mathematics as LaTeX" width="100%">
-</div>
-
-**English with dense mathematics.** Display equations are separated from the surrounding prose and
-returned as LaTeX.
+**Example #3 — Handwritten Hindi maths.** 
+(Handwriting recognition is a feature we are actively working on improving in our models.)
 
 ---
 
