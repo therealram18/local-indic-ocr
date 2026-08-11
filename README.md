@@ -192,12 +192,11 @@ parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markd
 
 Sample HTML output:
 
-<table>
-<tr>
-<td width="42%" valign="top" align="center">
-<img src="assets/table-example.png" alt="A newspaper table of bowling statistics with a dark title banner and yellow highlighted cells" width="100%">
-</td>
-<td width="58%" valign="top">
+<div align="center">
+  <img src="assets/table-example.png" alt="A newspaper table of bowling statistics with a dark title banner and yellow highlighted cells">
+</div>
+
+and the table it returns:
 
 <table>
 <thead>
@@ -243,10 +242,6 @@ Sample HTML output:
 <td>5.41</td>
 </tr>
 </tbody>
-</table>
-
-</td>
-</tr>
 </table>
 
 ---
