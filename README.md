@@ -89,8 +89,8 @@ Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu.
 **Handwriting** recognition currently supports English and 12 Indian languages: Hindi, Bengali,
 Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Odia, Punjabi, Assamese, and Urdu.
 
-Handwriting quality is still a work in progress, particularly across different writing styles.
-We are continuing to improve recognition and extend support to additional languages.
+Handwriting quality is still a work in progress, particularly across different writing styles. We are working on improving recognition and extending support to additional languages.
+
 ---
 
 <h2 id="usage" style="color:#F97316;">Usage</h2>
