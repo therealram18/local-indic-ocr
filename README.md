@@ -11,7 +11,6 @@ tags:
   - vision-language-model
   - qwen
   - rt-detr
-metrics: [wer]
 ---
 
 
@@ -36,11 +35,9 @@ per-block JSON.
 </div>
 
 IndicDocParser reads a document page and returns its text in reading order. It is a modular,
-two-stage parser: **IndicDocLayout** finds the blocks on the page and orders them, and
-**IndicBlockOCR** transcribes each block, with math produced in LaTeX format, and tables as HTML or Markdown.
-
-Since the stages are separate, the layout module can be used as is or swapped by a different one, or
-run only the block-level text recognizer. The intermediate step is a structured JSON file passed between the two.
+two-stage parser: **IndicDocLayout** detects the blocks on the page and orders them, and
+**IndicBlockOCR** transcribes the textual blocks. The two stages communicate through a structured
+JSON file, so either stage can be used independently or replaced with another implementation.
 
 ---
 
@@ -65,17 +62,21 @@ Detected blocks with their reading order on the left, the transcription on the r
 
 ---
 
-<h2 id="the-two-models" style="color:#F97316;">The two models</h2>
+<h2 id="model-summary" style="color:#F97316;">Model Summary</h2>
 
 | | IndicDocLayout | IndicBlockOCR |
 | --- | --- | --- |
-| **Role** | detect blocks + reading order | transcribe each block |
-| **Architecture** | PP-DocLayoutV3 (RT-DETR) for layout detection and reading order | Qwen3.5 for text recognition |
+| **Role** | Layout detection + reading order | Block-level text recognition |
+| **Architecture** | PP-DocLayoutV3 / RT-DETR | Qwen3.5-0.8B |
 | **Parameters** | 33 M | 0.8 B |
 | **Precision** | fp32 | bf16 |
 | **In this repo** | `weights/layout` (133 MB) | `weights/ocr` (1.7 GB) |
+| **Output** | Layout JSON | Markdown + block JSON |
 
-IndicBlockOCR is trained using the **Sarvam-30B tokenizer**, which has a large vocabulary tuned for good performance on Indian scripts. IndicDocLayout is a finetune based on PP-DocLayoutV3/RT-DETR, trained to predict from an education-domain focussed taxonomy of 37-classes.
+
+IndicBlockOCR uses the **Sarvam-30B tokenizer**, with a vocabulary designed to cover Indian
+scripts. IndicDocLayout is a fine-tune of PP-DocLayoutV3/RT-DETR, trained with a 37-class
+taxonomy designed for education-domain documents.
 
 ---
 
@@ -85,13 +86,14 @@ IndicBlockOCR is trained using the **Sarvam-30B tokenizer**, which has a large v
 Gujarati, Hindi, Kannada, Kashmiri, Konkani, Maithili, Malayalam, Manipuri, Marathi, Nepali,
 Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu, Urdu.
 
-**Handwriting** recognition is supported for English and
-12 languages: Hindi, Bengali, Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Odia,
-Punjabi, Assamese and Urdu. We are very excited to take this first step in supporting handwriting recognition across many Indian languages, and are working on improving quality further, and adding support for other languages as well.
+**Handwriting** recognition currently supports English and 12 Indian languages: Hindi, Bengali,
+Telugu, Marathi, Tamil, Gujarati, Kannada, Malayalam, Odia, Punjabi, Assamese, and Urdu.
 
+Handwriting quality is still a work in progress, particularly across different writing styles.
+We are continuing to improve recognition and extend support to additional languages.
 ---
 
-<h2 id="how-to-use-this-model" style="color:#F97316;">How to Use this Model</h2>
+<h2 id="usage" style="color:#F97316;">Usage</h2>
 
 <h3 style="color:#F97316;">Installation</h3>
 
@@ -134,7 +136,7 @@ with open("page.json", "w", encoding="utf-8") as f:
 
 <h3 style="color:#F97316;">Running one stage at a time</h3>
 
-To decompose into 2 separate stages:
+To run the two stages separately:
 
 ```python
 from indic_doc_parser import IndicDocLayout, IndicBlockOCR
@@ -149,7 +151,7 @@ page = IndicBlockOCR(f"{repo}/weights/ocr").run("page.png", layout)
 
 <h2 id="output" style="color:#F97316;">Output</h2>
 
-`parser.parse(page)` returns the page and its blocks in reading order:
+`parser.parse("page.png")` returns the page metadata and its blocks in reading order:
 
 ```json
 {
@@ -177,9 +179,9 @@ page = IndicBlockOCR(f"{repo}/weights/ocr").run("page.png", layout)
 | `conf` | detection confidence |
 | `text` | transcription; `""` for blocks not sent to the recognizer |
 
-**Note:** Figures, charts, advertisements and running headers and footers are not sent through the recognizer model by default, but
-they remain in the JSON with `text: ""`, so you can see what was detected and where. Page numbers
-and other margin text like folio *are* transcribed.
+**Note:** Figures, charts, advertisements, running headers, and footers are not sent through the recognizer
+by default. They remain in the JSON with `text: ""`, so you can see what was detected and where.
+Page numbers and other margin text such as folios are transcribed.
 
 <h3 style="color:#F97316;">Table format</h3>
 
@@ -216,8 +218,11 @@ Needs reevaluation.
 
 <h2 id="limitations" style="color:#F97316;">Limitations</h2>
 
-We are currently working on improving support for **complex, multi-column reading orders**. We are also enhancing **handwriting recognition**, with a focus on handling the distinct characteristics of **children’s and adults’ handwriting**, while extending support to additional **Indic languages**.
+Reading order remains a challenge for **complex, multi-column layouts**. Handwriting recognition
+is also still being improved, particularly across different writing styles and writing
+characteristics.
 
+We are also extending handwriting support to additional Indic languages.
 
 
 ---
@@ -230,16 +235,18 @@ Latency and throughput numbers to follow.
 
 <h2 id="license" style="color:#F97316;">License</h2>
 
-**Apache 2.0**, inherited from all of its underlying components: PP-DocLayoutV3 (Apache 2.0), Qwen3.5 (Apache 2.0), and the Sarvam-30B tokenizer (Apache 2.0). You may use, modify, fine-tune, and redistribute the model, subject to the terms of the Apache 2.0 License, including appropriate attribution and a copy of the license.
+This model and repository are released under the **Apache 2.0 License**.
 
-
+The release incorporates components distributed under Apache 2.0, including PP-DocLayoutV3,
+Qwen3.5, and the Sarvam-30B tokenizer. See the repository license and the corresponding upstream
+licenses for the applicable terms and attribution requirements.
 ---
 
 <h2 id="citation" style="color:#F97316;">Citation</h2>
 
 ```bibtex
 @misc{indicdocparser2026,
-  title  = {IndicDocParser: Multilingual 2-stage Document Parsing for 22 Indian Languages and English},
+  title  = {IndicDocParser: Multilingual Document Parsing for English and 22 Indian Languages},
   author = {Bodhan.AI},
   year   = {2026},
   url    = {https://huggingface.co/bodhan-ai/indic-doc-parser}
