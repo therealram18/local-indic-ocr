@@ -78,6 +78,11 @@ IndicBlockOCR uses the **Sarvam-30B tokenizer**, with a vocabulary designed to c
 scripts. IndicDocLayout is a fine-tune of PP-DocLayoutV3/RT-DETR, trained with a 37-class
 taxonomy designed for education-domain documents.
 
+IndicDocLayout predicts a labelled bounding box for each detected layout element.
+The 37 supported labels are:
+
+> `Advertisement`, `Answer`, `Author`, `Chapter-end-section`, `Chapter-title`, `Chart`, `Code`, `Contact-info`, `Dateline`, `Diagram`, `Equation`, `Expression`, `Flag`, `Folio`, `Footer`, `Footnote`, `Header`, `Image`, `Image-caption`, `Index`, `Infobox`, `List`, `MCQ`, `Page-number`, `Paragraph`, `Placeholder-text`, `Question`, `Reference`, `Section-title`, `Solved-example`, `Sub-section-title`, `Sub-sub-section-title`, `Table`, `Table-caption`, `Table-of-contents`, `Title`, `Website-link`
+
 ---
 
 <h2 id="supported-languages" style="color:#F97316;">Supported languages</h2>
