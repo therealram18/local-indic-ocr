@@ -196,23 +196,62 @@ parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markd
 
 <h2 id="performance" style="color:#F97316;">Performance</h2>
 
-<h3 style="color:#F97316;">olmOCR-Bench (English)</h3>
+<h3 style="color:#F97316;">OmniDocBench 1.6 (eng-official)</h3>
 
-| System | Overall | ArXiv math | Baseline | Headers/Footers | Long/tiny | Multi-col | Old scans | Old-scan math | Tables |
+| OmniDocBench 1.6 (eng-official) | Overall↑ | TextEdit↓ | FormulaCDM↑ | TableTEDS↑ | TableTEDS-S↑ | Read OrderEdit↓ |
+| --- | :---: | :---: | :---: | :---: | :---: | :---: |
+| PaddleOCRVL-1.6 | 96.36 | 0.03 | 98.55 | 93.37 | 96.33 | 0.09 |
+| Sarvam Vision (reported) | 93.28 | 0.02 | 96.54 | 85.26 | 92.83 | 0.03 |
+| Chandra OCR | 93.11 | 0.04 | 96.93 | 86.07 | 90.34 | 0.09 |
+| Gemini 3.5 Flash | 92.94 | 0.04 | 96.20 | 86.57 | 92.17 | 0.14 |
+| **IndicOCR (ours)** | **92.76** | **0.04** | **97.53** | **85.10** | **90.58** | **0.11** |
+| GPT-5.6-sol | 92.46 | 0.04 | 95.42 | 85.87 | 90.98 | 0.10 |
+| Gemini 3.1 Pro | 91.15 | 0.06 | 95.53 | 83.46 | 88.77 | 0.13 |
+| Surya OCR 2 (model) | 91.13 | 0.04 | 95.67 | 81.61 | 86.37 | 0.10 |
+| Gemma 31B | 86.71 | 0.0915 | 89.48 | 79.79 | 85.19 | 0.1913 |
+
+<h3 style="color:#F97316;">olmOCR-Bench (eng-sarvam)</h3>
+
+| OlmoOCRBench (eng-sarvam) | Overall | arxiv_math | baseline | headers_footers | long_tiny_text | multi_column | old_scans | old_scans_math | table_tests |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **IndicDocParser** | **82.9** | 84.5 | 99.2 | 98.3 | 90.3 | 73.5 | 47.3 | 80.8 | 89.5 |
-| Sarvam-OCR  | 84.3 | 86.5 | 99.6 | 96.3 | 91.0 | 82.2 | 49.8 | 81.0 | 88.3 |
-| PaddleOCR-VL-1.6  | 78.7 | 85.1 | 98.7 | 95.8 | 75.1 | 84.1 | 39.0 | 68.8 | 82.9 |
+| Chandra OCR | 86 | 86.7 | 99.8 | 91.5 | 93.7 | 84.7 | 51 | 88.2 | 92.2 |
+| Sarvam Vision (reported) | 84.3 | 86.5 | 99.6 | 96.3 | 91 | 82.2 | 49.8 | 81 | 88.3 |
+| Gemini 3.5 Flash | 83.2 | 84.6 | 99.7 | 82.9 | 94.1 | 84.7 | 53.4 | 78.6 | 87.3 |
+| Gemini 3.1 Pro | 82.6 | 90.5 | 99 | 82.9 | 88.5 | 81.6 | 47 | 84.3 | 87.3 |
+| **IndicOCR (ours)** | **82.2** | **83.2** | **99.4** | **92.9** | **89.8** | **76** | **48.3** | **77.7** | **90** |
+| Surya OCR 2 (model) | 81.4 | 82.5 | 99.8 | 92.9 | 79.9 | 85.1 | 42.8 | 84.3 | 84.2 |
+| Gemma 31B | 80.4 | 79 | 99.4 | 92.9 | 89.8 | 80.5 | 45.8 | 73.8 | 82.2 |
+| PaddleOCRVL-1.6 | 78.7 | 85.1 | 98.4 | 96.2 | 75.3 | 83.9 | 39 | 68.3 | 83 |
+| GPT | 78 | 79.3 | 93.9 | 95.4 | 87.8 | 77.4 | 43.7 | 64.6 | 82.2 |
 
-Re-measurement under the shipped configuration is pending.
+<h3 style="color:#F97316;">IndicOCR-PR — WER by language (lower is better)</h3>
 
-<h3 style="color:#F97316;">Printed Recognition Performance</h3>
-
-Needs reevaluation.
-
-<h3 style="color:#F97316;">Handwriting Recognition Performance</h3>
-
-Needs reevaluation.
+| Language | IndicOCR (ours) | Gemini 3.1 Pro | Gemini 3.5 Flash | SuryaOCR |
+| --- | :---: | :---: | :---: | :---: |
+| **Overall** | **14.61%** | 19.00% | 22.00% | 32.00% |
+| `as` | 10.13% | 9.26% | 11.61% | 13.62% |
+| `bd` | 13.54% | 9.03% | 16.36% | 44.44% |
+| `bn` | 8.61% | 7.47% | 8.91% | 18.91% |
+| `do` | 18.25% | 16.34% | 22.19% | 39.53% |
+| `en` | 3.65% | 2.33% | 2.21% | 6.24% |
+| `gu` | 8.34% | 7.20% | 8.89% | 20.41% |
+| `hi` | 3.94% | 3.69% | 4.48% | 9.71% |
+| `kk` | 6.34% | 6.53% | 9.90% | 9.45% |
+| `kn` | 12.53% | 10.16% | 13.91% | 24.34% |
+| `ks` | 50.13% | 61.95% | 67.90% | 76.55% |
+| `ml` | 10.48% | 9.43% | 12.30% | 23.53% |
+| `mp` | 17.61% | 99.19% | 99.68% | 99.88% |
+| `mr` | 6.13% | 5.48% | 6.19% | 15.72% |
+| `mt` | 17.51% | 13.27% | 16.21% | 32.36% |
+| `ne` | 8.42% | 6.28% | 8.19% | 12.37% |
+| `or` | 25.41% | 15.19% | 26.36% | 35.48% |
+| `pa` | 6.96% | 6.53% | 10.31% | 13.69% |
+| `sa` | 23.67% | 16.28% | 21.82% | 42.22% |
+| `sd` | 13.47% | 13.68% | 16.17% | 19.52% |
+| `sn` | 26.55% | 99.76% | 99.26% | 99.89% |
+| `ta` | 8.91% | 5.59% | 7.03% | 20.09% |
+| `te` | 18.12% | 14.55% | 18.23% | 36.94% |
+| `ur` | 13.93% | 11.98% | 12.36% | 23.64% |
 
 ---
 
