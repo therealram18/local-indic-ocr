@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://huggingface.co/bodhan-ai/indic-doc-parser/raw/main/schemas/layout_output.schema.json",
-  "title": "IndicDocParser layout JSON (stage-1 output = stage-2 input)",
-  "description": "What IndicDocLayout writes and what the recognition stage consumes. Blocks carry NO 'text' key: absence means 'not transcribed yet'. That is deliberately distinct from text: \"\" in a parsed page, which means 'detected but deliberately not sent to the recognizer'. Collapsing the two would make an unparsed page indistinguishable from a parsed one whose blocks were all skipped.",
+  "title": "Layout JSON (stage-1 output, stage-2 input)",
+  "description": "Blocks carry no 'text' key. Absence means not transcribed yet, which is distinct from text: \"\" in a parsed page.",
   "type": "object",
   "required": [
     "image",
@@ -12,22 +12,18 @@
   ],
   "properties": {
     "image": {
-      "type": "string",
-      "description": "Source image filename."
+      "type": "string"
     },
     "width": {
       "type": "integer",
-      "exclusiveMinimum": 0,
-      "description": "Page px width."
+      "exclusiveMinimum": 0
     },
     "height": {
       "type": "integer",
-      "exclusiveMinimum": 0,
-      "description": "Page px height."
+      "exclusiveMinimum": 0
     },
     "blocks": {
       "type": "array",
-      "description": "Blocks in reading order.",
       "items": {
         "$ref": "#/$defs/block"
       }
@@ -44,11 +40,11 @@
         "order": {
           "type": "integer",
           "minimum": 0,
-          "description": "Reading-order rank. MUST be gap-free and 0-based across the page: stage 2 matches transcriptions back to blocks by position, so a gap or a duplicate silently assigns text to the wrong block."
+          "description": "Reading-order rank. Gap-free and 0-based across the page."
         },
         "label": {
           "type": "string",
-          "description": "The raw IndicDocLayout class. Constrained to the 37-class taxonomy only when 'type' is absent -- a detector with its own taxonomy declares 'type' instead and may use any label."
+          "description": "IndicDocLayout class. Restricted to the taxonomy unless 'type' is given."
         },
         "type": {
           "type": "string",
@@ -66,7 +62,7 @@
             "Figure",
             "Picture"
           ],
-          "description": "The coarse pipeline category, which selects the prompt. Derived from 'label' when omitted. Declare it explicitly if your labels are not IndicDocLayout's."
+          "description": "Pipeline category; selects the prompt. Derived from 'label' when omitted."
         },
         "bbox_xyxy": {
           "type": "array",
@@ -75,7 +71,7 @@
           },
           "minItems": 4,
           "maxItems": 4,
-          "description": "Pixel box [x0, y0, x1, y1], clamped to the page. NOTE the raw detector emits [y0, x0, y1, x1] normalised to 0-1000; the conversion happens in IndicDocLayoutBackend.detect, and this is the converted form."
+          "description": "Pixel [x0, y0, x1, y1], clamped to the page."
         },
         "conf": {
           "type": "number",

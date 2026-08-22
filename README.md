@@ -188,6 +188,19 @@ page = IndicBlockOCR(f"{repo}/weights/ocr").run("page.png", layout)
 by default. They remain in the JSON with `text: ""`, so you can see what was detected and where.
 Page numbers and other margin text such as folios are transcribed.
 
+<h3 style="color:#F97316;">Schemas</h3>
+
+Machine-readable JSON Schema for each envelope, in [`schemas/`](schemas):
+
+| file | describes |
+| --- | --- |
+| `layout_output.schema.json` | What stage 1 writes and stage 2 reads. Blocks carry **no** `text` key: absent means not transcribed yet, which is not the same as `""`. |
+| `parse_output.schema.json` | The parsed page shown above. Every block has `text`; `""` means detected but deliberately not sent to the recognizer. |
+| `ocr_request.schema.json` | The chat-completions body for one crop, when the recognizer runs behind `vllm serve`. Offline use sends no JSON. |
+
+A layout from your own detector must use a `label` from the 37-class taxonomy, or declare `type`
+explicitly. An unrecognised label is rejected rather than silently read as prose.
+
 <h3 style="color:#F97316;">Table format</h3>
 
 Tables come back as HTML by default. Choose the format when you construct the parser:

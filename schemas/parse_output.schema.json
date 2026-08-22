@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://huggingface.co/bodhan-ai/indic-doc-parser/raw/main/schemas/parse_output.schema.json",
-  "title": "IndicDocParser page JSON (final output)",
-  "description": "The parsed page. Every block carries 'text'. An empty string means the block was detected but deliberately not sent to the recognizer (running headers and footers, figures, charts, advertisements) -- those blocks are kept, not deleted, so a consumer can still see what was found and where. Do not treat \"\" as 'drop'.",
+  "title": "Parsed page JSON (final output)",
+  "description": "Every block carries 'text'.",
   "type": "object",
   "required": [
     "image",
@@ -12,22 +12,18 @@
   ],
   "properties": {
     "image": {
-      "type": "string",
-      "description": "Source image filename."
+      "type": "string"
     },
     "width": {
       "type": "integer",
-      "exclusiveMinimum": 0,
-      "description": "Page px width."
+      "exclusiveMinimum": 0
     },
     "height": {
       "type": "integer",
-      "exclusiveMinimum": 0,
-      "description": "Page px height."
+      "exclusiveMinimum": 0
     },
     "blocks": {
       "type": "array",
-      "description": "Blocks in reading order.",
       "items": {
         "$ref": "#/$defs/block"
       }
@@ -42,9 +38,50 @@
         "text"
       ],
       "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Reading-order rank. Gap-free and 0-based across the page."
+        },
+        "label": {
+          "type": "string",
+          "description": "IndicDocLayout class. Restricted to the taxonomy unless 'type' is given."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Text",
+            "Title",
+            "SectionHeader",
+            "Table",
+            "Equation",
+            "Caption",
+            "Footnote",
+            "PageHeader",
+            "PageFooter",
+            "PageNumber",
+            "Figure",
+            "Picture"
+          ],
+          "description": "Pipeline category; selects the prompt. Derived from 'label' when omitted."
+        },
+        "bbox_xyxy": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Pixel [x0, y0, x1, y1], clamped to the page."
+        },
+        "conf": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
         "text": {
           "type": "string",
-          "description": "Transcription. \"\" = detected but deliberately not transcribed. Tables arrive as HTML, equations as LaTeX."
+          "description": "Transcription. \"\" means detected but deliberately not sent to the recognizer; the block is kept, not dropped."
         }
       },
       "allOf": [

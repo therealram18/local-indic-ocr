@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://huggingface.co/bodhan-ai/indic-doc-parser/raw/main/schemas/ocr_request.schema.json",
-  "title": "IndicBlockOCR request (one block crop, served)",
-  "description": "The OpenAI chat-completions body for ONE crop, as built by serving.recognizer_http.build_messages. This is the only JSON the recognizer sees; the model itself takes an image plus a prompt string, and returns plain text, not JSON. The endpoint serves the recognizer alone and expects one block crop per request -- it is not a page-level API. Image part first, then text: the chat template branches on content order, and reversing it changes the rendered prompt.",
+  "title": "Recognizer request, one block crop (served path only)",
+  "description": "OpenAI chat-completions body for ONE crop. The model takes an image and a prompt and returns plain text, so there is no response schema. Offline use sends no JSON at all. Image part first, then text: the chat template branches on content order.",
   "type": "object",
   "required": [
     "model",
@@ -15,8 +15,7 @@
     },
     "temperature": {
       "type": "number",
-      "default": 0.0,
-      "description": "0.0 (greedy) is the only setting reproducible run to run."
+      "default": 0.0
     },
     "max_tokens": {
       "type": "integer",
@@ -60,7 +59,7 @@
                       "url": {
                         "type": "string",
                         "pattern": "^data:image/",
-                        "description": "The crop as a PNG data URI. The crop is area-clamped to [256^2, 1536^2] px before encoding -- see idp_crops.area_clamp."
+                        "description": "The crop as a PNG data URI, area-clamped to [256^2, 1536^2] px."
                       }
                     }
                   }
@@ -78,7 +77,7 @@
                   },
                   "text": {
                     "type": "string",
-                    "description": "The prompt for this block's type, from contract.prompt_for(): transcription, LaTeX-only, or table-to-HTML."
+                    "description": "The prompt for this block's type."
                   }
                 }
               }
