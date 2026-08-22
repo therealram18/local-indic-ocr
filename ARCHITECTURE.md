@@ -85,10 +85,8 @@ Blocks that were skipped are not deleted. They come back with `text: ""`.
 
 ## Invariants
 
-Break one of these and the output is wrong without an error.
-
 1. **Two box conventions.** The model emits `[y0, x0, y1, x1]` normalised to 0-1000. The
-   pipeline uses pixel `[x0, y0, x1, y1]`. `idp_layout.py` converts, once.
+   pipeline uses pixel `[x0, y0, x1, y1]`. 
 2. **`order` must be gap-free and 0-based.** Transcriptions are matched back to blocks by
    position, so a gap or a duplicate moves text onto the wrong block.
 3. **The crop clamp is on area, not on a side.** Pinning a side explodes elongated crops. See
