@@ -194,9 +194,8 @@ Machine-readable JSON Schema for each envelope, in [`schemas/`](schemas):
 
 | file | describes |
 | --- | --- |
-| `layout_output.schema.json` | What stage 1 writes and stage 2 reads. Blocks carry **no** `text` key: absent means not transcribed yet, which is not the same as `""`. |
-| `parse_output.schema.json` | The parsed page shown above. Every block has `text`; `""` means detected but deliberately not sent to the recognizer. |
-| `ocr_request.schema.json` | The chat-completions body for one crop, when the recognizer runs behind `vllm serve`. Offline use sends no JSON. |
+| `layout_output.schema.json` | The layout file: what **IndicDocLayout** writes and **IndicBlockOCR** reads. Blocks and reading order, before any text is read, so there is **no** `text` key at all. |
+| `parse_output.schema.json` | The parsed page shown above. Every block now has `text`; `""` means the block was detected but deliberately not sent to the recognizer. |
 
 A layout from your own detector must use a `label` from the 37-class taxonomy, or declare `type`
 explicitly. An unrecognised label is rejected rather than silently read as prose.
