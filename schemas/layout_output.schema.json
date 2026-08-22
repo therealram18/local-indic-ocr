@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://huggingface.co/bodhan-ai/indic-doc-parser/raw/main/schemas/layout_output.schema.json",
+  "title": "IndicDocParser layout JSON (stage-1 output = stage-2 input)",
+  "description": "What IndicDocLayout writes and what the recognition stage consumes. Blocks carry NO 'text' key: absence means 'not transcribed yet'. That is deliberately distinct from text: \"\" in a parsed page, which means 'detected but deliberately not sent to the recognizer'. Collapsing the two would make an unparsed page indistinguishable from a parsed one whose blocks were all skipped.",
+  "type": "object",
+  "required": [
+    "image",
+    "width",
+    "height",
+    "blocks"
+  ],
+  "properties": {
+    "image": {
+      "type": "string",
+      "description": "Source image filename."
+    },
+    "width": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "description": "Page px width."
+    },
+    "height": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "description": "Page px height."
+    },
+    "blocks": {
+      "type": "array",
+      "description": "Blocks in reading order.",
+      "items": {
+        "$ref": "#/$defs/block"
+      }
+    }
+  },
+  "$defs": {
+    "block": {
+      "type": "object",
+      "required": [
+        "order",
+        "bbox_xyxy"
+      ],
+      "properties": {
+        "order": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Reading-order rank. MUST be gap-free and 0-based across the page: stage 2 matches transcriptions back to blocks by position, so a gap or a duplicate silently assigns text to the wrong block."
+        },
+        "label": {
+          "type": "string",
+          "description": "The raw IndicDocLayout class. Constrained to the 37-class taxonomy only when 'type' is absent -- a detector with its own taxonomy declares 'type' instead and may use any label."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Text",
+            "Title",
+            "SectionHeader",
+            "Table",
+            "Equation",
+            "Caption",
+            "Footnote",
+            "PageHeader",
+            "PageFooter",
+            "PageNumber",
+            "Figure",
+            "Picture"
+          ],
+          "description": "The coarse pipeline category, which selects the prompt. Derived from 'label' when omitted. Declare it explicitly if your labels are not IndicDocLayout's."
+        },
+        "bbox_xyxy": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "description": "Pixel box [x0, y0, x1, y1], clamped to the page. NOTE the raw detector emits [y0, x0, y1, x1] normalised to 0-1000; the conversion happens in IndicDocLayoutBackend.detect, and this is the converted form."
+        },
+        "conf": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "not": {
+              "required": [
+                "type"
+              ]
+            }
+          },
+          "then": {
+            "required": [
+              "label"
+            ],
+            "properties": {
+              "label": {
+                "enum": [
+                  "Question",
+                  "Paragraph",
+                  "Answer",
+                  "List",
+                  "Title",
+                  "Section-title",
+                  "Equation",
+                  "Table",
+                  "Diagram",
+                  "Image",
+                  "MCQ",
+                  "Infobox",
+                  "Sub-section-title",
+                  "Expression",
+                  "Image-caption",
+                  "Placeholder-text",
+                  "Chart",
+                  "Solved-example",
+                  "Footnote",
+                  "Table-caption",
+                  "Sub-sub-section-title",
+                  "Footer",
+                  "Header",
+                  "Code",
+                  "Page-number",
+                  "Chapter-title",
+                  "Chapter-end-section",
+                  "Folio",
+                  "Reference",
+                  "Table-of-contents",
+                  "Index",
+                  "Advertisement",
+                  "Author",
+                  "Dateline",
+                  "Contact-info",
+                  "Website-link",
+                  "Flag"
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "not": {
+        "required": [
+          "text"
+        ]
+      }
+    }
+  }
+}

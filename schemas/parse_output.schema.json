@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://huggingface.co/bodhan-ai/indic-doc-parser/raw/main/schemas/parse_output.schema.json",
+  "title": "IndicDocParser page JSON (final output)",
+  "description": "The parsed page. Every block carries 'text'. An empty string means the block was detected but deliberately not sent to the recognizer (running headers and footers, figures, charts, advertisements) -- those blocks are kept, not deleted, so a consumer can still see what was found and where. Do not treat \"\" as 'drop'.",
+  "type": "object",
+  "required": [
+    "image",
+    "width",
+    "height",
+    "blocks"
+  ],
+  "properties": {
+    "image": {
+      "type": "string",
+      "description": "Source image filename."
+    },
+    "width": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "description": "Page px width."
+    },
+    "height": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "description": "Page px height."
+    },
+    "blocks": {
+      "type": "array",
+      "description": "Blocks in reading order.",
+      "items": {
+        "$ref": "#/$defs/block"
+      }
+    }
+  },
+  "$defs": {
+    "block": {
+      "type": "object",
+      "required": [
+        "order",
+        "bbox_xyxy",
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Transcription. \"\" = detected but deliberately not transcribed. Tables arrive as HTML, equations as LaTeX."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "not": {
+              "required": [
+                "type"
+              ]
+            }
+          },
+          "then": {
+            "required": [
+              "label"
+            ],
+            "properties": {
+              "label": {
+                "enum": [
+                  "Question",
+                  "Paragraph",
+                  "Answer",
+                  "List",
+                  "Title",
+                  "Section-title",
+                  "Equation",
+                  "Table",
+                  "Diagram",
+                  "Image",
+                  "MCQ",
+                  "Infobox",
+                  "Sub-section-title",
+                  "Expression",
+                  "Image-caption",
+                  "Placeholder-text",
+                  "Chart",
+                  "Solved-example",
+                  "Footnote",
+                  "Table-caption",
+                  "Sub-sub-section-title",
+                  "Footer",
+                  "Header",
+                  "Code",
+                  "Page-number",
+                  "Chapter-title",
+                  "Chapter-end-section",
+                  "Folio",
+                  "Reference",
+                  "Table-of-contents",
+                  "Index",
+                  "Advertisement",
+                  "Author",
+                  "Dateline",
+                  "Contact-info",
+                  "Website-link",
+                  "Flag"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

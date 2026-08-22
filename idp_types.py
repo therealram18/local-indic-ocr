@@ -20,6 +20,30 @@ from dataclasses import dataclass, field
 from idp_contract import TableFormat
 
 
+class LayoutSchemaError(ValueError):
+    """An incoming layout record cannot be interpreted unambiguously.
+
+    Raised rather than warned because the alternative is silent and wrong. A label the taxonomy
+    does not contain falls through to ``Text``, so a table would be sent the prose prompt and
+    come back as flattened text with nothing in the output saying so. Our own detector only ever
+    emits ``layout.labels.CLASSES``, so an unrecognised label always means either a third-party
+    taxonomy -- which should declare ``type`` -- or a typo. Both are worth stopping for.
+
+    ``map_label`` itself stays total: 19 of the 37 classes are deliberately absent from
+    ``LABEL_TO_TYPE`` and correctly mean ``Text``, so leniency belongs there. Validation belongs
+    here, at the boundary where foreign JSON enters.
+    """
+
+
+def _unknown(value, candidates, kind: str) -> str:
+    """``unknown label 'Tabel'; did you mean 'Table'?`` -- the suggestion is most of the value."""
+    import difflib
+
+    match = difflib.get_close_matches(str(value), list(candidates), n=1, cutoff=0.6)
+    hint = f"; did you mean {match[0]!r}?" if match else ""
+    return f"unknown {kind} {value!r}{hint}"
+
+
 @dataclass
 class Block:
     """One detected region. ``text`` is None before OCR, and "" for blocks deliberately not
@@ -47,9 +71,56 @@ class Block:
         return record
 
     @classmethod
-    def from_record(cls, record: dict) -> Block:
+    def problems(cls, record: dict) -> list[str]:
+        """Everything wrong with one incoming block record, as readable strings.
+
+        Returns rather than raises so a whole page can be reported at once. Fixing a 60-block
+        layout one exception at a time is the difference between one edit and sixty.
+        """
+        from idp_model_labels import CLASSES
+        from idp_contract import DROP_TYPES, KEPT_BLOCK_TYPES
+
+        found: list[str] = []
+        for key in ("order", "bbox_xyxy"):
+            if key not in record:
+                found.append(f"missing required key {key!r}")
+
+        bbox = record.get("bbox_xyxy")
+        if bbox is not None:
+            try:
+                if len([float(v) for v in bbox]) != 4:
+                    found.append(f"bbox_xyxy must be 4 numbers [x0, y0, x1, y1], got {bbox!r}")
+            except (TypeError, ValueError):
+                found.append(f"bbox_xyxy must be 4 numbers [x0, y0, x1, y1], got {bbox!r}")
+
+        # An explicit `type` is the documented escape hatch for a foreign taxonomy, so the label
+        # is not checked when one is given -- but the type itself is. Left unchecked, `Tabel`
+        # is accepted verbatim and never matches `Table`, which is the same silent failure one
+        # level up.
+        declared = record.get("type")
+        if declared:
+            valid = tuple(KEPT_BLOCK_TYPES) + tuple(sorted(DROP_TYPES))
+            if str(declared) not in valid:
+                found.append(_unknown(declared, valid, "type"))
+        else:
+            label = str(record.get("label", "")).strip()
+            if label.lower() not in {c.strip().lower() for c in CLASSES}:
+                found.append(
+                    _unknown(label, CLASSES, "label")
+                    + ' -- use a spelling from layout.labels.CLASSES, or declare "type"'
+                    " explicitly if your detector has its own taxonomy"
+                )
+        return found
+
+    @classmethod
+    def from_record(cls, record: dict, *, strict: bool = True) -> Block:
         # `type` is derived when absent, so a third-party layout carrying only labels works.
         from idp_contract import map_label
+
+        if strict:
+            found = cls.problems(record)
+            if found:
+                raise LayoutSchemaError("; ".join(found))
 
         label = record.get("label", "")
         return cls(
@@ -82,12 +153,29 @@ class PageResult:
         }
 
     @classmethod
-    def from_record(cls, record: dict) -> PageResult:
+    def from_record(cls, record: dict, *, strict: bool = True) -> PageResult:
+        """``strict=False`` replays a layout without validating it -- for reading back files
+        written before validation existed, not for new integrations."""
+        blocks = list(record.get("blocks", []))
+
+        if strict:
+            errors = [
+                f"  block[{i}] (order={b.get('order', '?')!r}): {problem}"
+                for i, b in enumerate(blocks)
+                for problem in Block.problems(b)
+            ]
+            if errors:
+                raise LayoutSchemaError(
+                    f"{len(errors)} problem(s) in layout for "
+                    f"{record.get('image', '<unknown>')!r}:\n" + "\n".join(errors)
+                )
+
         return cls(
             image=str(record["image"]),
             width=int(record["width"]),
             height=int(record["height"]),
-            blocks=[Block.from_record(b) for b in record.get("blocks", [])],
+            # Already validated above; re-checking each block would repeat the work.
+            blocks=[Block.from_record(b, strict=False) for b in blocks],
         )
 
 

@@ -103,14 +103,17 @@ class JsonLayoutBackend:
     hand-edited file usable without fixing ranks. Needs no torch.
     """
 
-    def __init__(self, layout: str | dict | PageResult) -> None:
+    def __init__(self, layout: str | dict | PageResult, *, strict: bool = True) -> None:
         if isinstance(layout, PageResult):
             self.page = layout
         else:
             if isinstance(layout, str):
                 with open(layout, encoding="utf-8") as fh:
                     layout = json.load(fh)
-            self.page = PageResult.from_record(layout)
+            # Validates by default: this is the door a foreign layout comes through, and an
+            # unrecognised label would otherwise become Text without a word. `strict=False`
+            # replays a file written before validation existed.
+            self.page = PageResult.from_record(layout, strict=strict)
 
     def detect(self, image: Image) -> list[Block]:
         """Copies, so renumbering cannot write back into the stored layout. ``image`` is
