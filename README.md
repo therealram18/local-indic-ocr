@@ -39,6 +39,9 @@ two-stage parser: **IndicDocLayout** detects the blocks on the page and orders t
 **IndicBlockOCR** transcribes the textual blocks. The two stages communicate through a structured
 JSON file, so either stage can be used independently or replaced with another implementation.
 
+[`ARCHITECTURE.md`](ARCHITECTURE.md) traces one page through the whole call path, names what
+each module does, and lists the invariants that break the output silently when violated.
+
 ---
 
 <h2 id="examples" style="color:#F97316;">Examples</h2>
