@@ -232,7 +232,7 @@ parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markd
 
 <h3 style="color:#F97316;">olmOCR-Bench (eng-sarvam)</h3>
 
-| OlmoOCRBench (eng-sarvam) | Overall | arxiv_math | baseline | headers_footers | long_tiny_text | multi_column | old_scans | old_scans_math | table_tests |
+| OlmoOCRBench (eng-sarvam) | Overall↑ | arxiv_math↑ | baseline↑ | headers_footers↑ | long_tiny_text↑ | multi_column↑ | old_scans↑ | old_scans_math↑ | table_tests↑ |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | Chandra OCR 2 | 85.9 | 86.7 | 99.8 | 91.5 | 93.7 | 84.7 | 51 | 88.2 | 92.2 |
 | Sarvam Vision | 84.3 | 86.5 | 99.6 | 96.3 | 91 | 82.2 | 49.8 | 81 | 88.3 |
