@@ -216,9 +216,9 @@ parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markd
 
 <h2 id="performance" style="color:#F97316;">Performance</h2>
 
-<h3 style="color:#F97316;">OmniDocBench 1.6 (eng-official)</h3>
+<h3 style="color:#F97316;">OmniDocBench 1.6 (english subset)</h3>
 
-| OmniDocBench 1.6 (eng-official) | Overall↑ | TextEdit↓ | FormulaCDM↑ | TableTEDS↑ | TableTEDS-S↑ | Read OrderEdit↓ |
+| OmniDocBench 1.6 (english subset) | Overall↑ | TextEdit↓ | FormulaCDM↑ | TableTEDS↑ | TableTEDS-S↑ | Read OrderEdit↓ |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: |
 | PaddleOCRVL-1.6 | 96.36 | 0.03 | 98.55 | 93.37 | 96.33 | 0.09 |
 | Chandra OCR 2 | 93.11 | 0.04 | 96.93 | 86.07 | 90.34 | 0.09 |
@@ -230,9 +230,9 @@ parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markd
 | Gemma 31B | 86.71 | 0.09 | 89.48 | 79.79 | 85.19 | 0.19 |
 | Nemotron Parse 2 | 79.12 | 0.159 | 78.94 | 74.32 | 81.09 | 0.29 |
 
-<h3 style="color:#F97316;">olmOCR-Bench (eng-sarvam)</h3>
+<h3 style="color:#F97316;">olmOCR-Bench (<a href="https://huggingface.co/datasets/sarvamai/olmOCR-Bench-English" style="color:#F97316;">english subset</a>)</h3>
 
-| OlmoOCRBench (eng-sarvam) | Overall↑ | arxiv_math↑ | baseline↑ | headers_footers↑ | long_tiny_text↑ | multi_column↑ | old_scans↑ | old_scans_math↑ | table_tests↑ |
+| OlmoOCRBench ([english subset](https://huggingface.co/datasets/sarvamai/olmOCR-Bench-English)) | Overall↑ | arxiv_math↑ | baseline↑ | headers_footers↑ | long_tiny_text↑ | multi_column↑ | old_scans↑ | old_scans_math↑ | table_tests↑ |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | Chandra OCR 2 | 85.9 | 86.7 | 99.8 | 91.5 | 93.7 | 84.7 | 51 | 88.2 | 92.2 |
 | Sarvam Vision | 84.3 | 86.5 | 99.6 | 96.3 | 91 | 82.2 | 49.8 | 81 | 88.3 |
