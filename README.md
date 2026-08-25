@@ -1,16 +1,38 @@
 ---
-license: apache-2.0
-language: [en, as, bn, brx, doi, gu, hi, kn, ks, kok, mai, ml, mni, mr, ne, or, pa, sa, sat, sd, ta, te, ur]
+language:
+- en
+- as
+- bn
+- brx
+- doi
+- gu
+- hi
+- kn
+- ks
+- kok
+- mai
+- ml
+- mni
+- mr
+- ne
+- or
+- pa
+- sa
+- sat
+- sd
+- ta
+- te
+- ur
 pipeline_tag: image-to-text
 tags:
-  - ocr
-  - document-parsing
-  - layout-analysis
-  - reading-order
-  - indic
-  - vision-language-model
-  - qwen
-  - rt-detr
+- ocr
+- document-parsing
+- layout-analysis
+- reading-order
+- indic
+- vision-language-model
+- qwen
+- rt-detr
 ---
 
 
