@@ -317,7 +317,8 @@ Latency and throughput numbers to follow.
 
 <h2 id="license" style="color:#F97316;">License</h2>
 
-This model and repository are released under the **Apache 2.0 License**.
+
+Released under [Bodhan Open License 1.0]().
 
 The release incorporates components distributed under Apache 2.0, including PP-DocLayoutV3,
 Qwen3.5, and the Sarvam-30B tokenizer. See the repository license and the corresponding upstream
