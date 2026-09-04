@@ -1,4 +1,4 @@
-# IndicDocParser: troubleshooting
+# IndicOCR: troubleshooting
 
 Install and runtime problems, and what to do about them. The model card is
 [README.md](README.md).

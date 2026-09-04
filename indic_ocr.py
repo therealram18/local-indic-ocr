@@ -1,13 +1,13 @@
-"""IndicDocParser -- page image in, reading-ordered Markdown and per-block JSON out.
+"""IndicOCR -- page image in, reading-ordered Markdown and per-block JSON out.
 
     import sys
     from huggingface_hub import snapshot_download
 
-    repo = snapshot_download("bodhan-ai/indic-doc-parser")
+    repo = snapshot_download("bodhan-ai/indic-ocr")
     sys.path.insert(0, repo)                       # the code ships in the repo
-    from indic_doc_parser import IndicDocParser
+    from indic_ocr import IndicOCR
 
-    parser = IndicDocParser.from_pretrained(repo)
+    parser = IndicOCR.from_pretrained(repo)
     print(parser("page.png"))                      # markdown
 
 ``sys.path.insert`` is needed because ``snapshot_download`` returns a cache directory, which is
@@ -41,11 +41,11 @@ def _preflight() -> None:
         try:
             mod = importlib.import_module(name)
         except ImportError:
-            raise ImportError(f"IndicDocParser needs {name}. Run: {fix}") from None
+            raise ImportError(f"IndicOCR needs {name}. Run: {fix}") from None
         got = tuple(int(p) for p in mod.__version__.split(".")[:2] if p.isdigit())
         if got < floor:
             raise ImportError(
-                f"IndicDocParser needs {name}>={'.'.join(map(str, floor))}, "
+                f"IndicOCR needs {name}>={'.'.join(map(str, floor))}, "
                 f"found {mod.__version__}. Run: {fix}"
             )
     # torchvision is stage 2 only, so its absence is not fatal here -- the layout stage runs
@@ -61,10 +61,10 @@ from idp_types import CropConfig, DedupConfig, LayoutConfig, RecognizerConfig, T
 
 #: The two stages are public: either runs on its own, and IndicBlockOCR accepts a layout you
 #: produced or corrected yourself.
-__all__ = ["IndicBlockOCR", "IndicDocLayout", "IndicDocParser"]
+__all__ = ["IndicBlockOCR", "IndicDocLayout", "IndicOCR"]
 
 
-class IndicDocParser:
+class IndicOCR:
     """Both stages. Construct with :meth:`from_pretrained`, then call it on a page image."""
 
     def __init__(
@@ -90,9 +90,9 @@ class IndicDocParser:
         self._ocr = None
 
     @classmethod
-    def from_pretrained(cls, path: str | Path | None = None, **kwargs) -> IndicDocParser:
+    def from_pretrained(cls, path: str | Path | None = None, **kwargs) -> IndicOCR:
         """Load from a downloaded snapshot. Defaults to the directory this file lives in, which
-        is the snapshot itself -- so ``IndicDocParser.from_pretrained()`` also works."""
+        is the snapshot itself -- so ``IndicOCR.from_pretrained()`` also works."""
         return cls(Path(path) if path else Path(__file__).resolve().parent, **kwargs)
 
     # -- stages ------------------------------------------------------------ #

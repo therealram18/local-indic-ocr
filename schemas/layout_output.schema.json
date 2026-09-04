@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://huggingface.co/bodhan-ai/indic-doc-parser/raw/main/schemas/layout_output.schema.json",
+  "$id": "https://huggingface.co/bodhan-ai/indic-ocr/raw/main/schemas/layout_output.schema.json",
   "title": "Layout JSON (stage-1 output, stage-2 input)",
   "description": "Blocks carry no 'text' key. Absence means not transcribed yet, which is distinct from text: \"\" in a parsed page.",
   "type": "object",

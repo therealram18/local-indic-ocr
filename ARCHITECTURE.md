@@ -15,7 +15,7 @@ package.
 One page, top to bottom, with the file that owns each step.
 
 ```text
-IndicDocParser.parse(image)                              idp_offline.py
+IndicOCR.parse(image)                              idp_offline.py
 
   IndicDocLayout.detect(image)                           idp_offline.py
     _open                     image -> PIL RGB           idp_offline.py
@@ -79,7 +79,7 @@ Blocks that were skipped are not deleted. They come back with `text: ""`.
 
 | file | holds |
 | --- | --- |
-| `idp_offline.py` | `IndicDocLayout`, `IndicBlockOCR`, `IndicDocParser` |
+| `idp_offline.py` | `IndicDocLayout`, `IndicBlockOCR`, `IndicOCR` |
 | `idp_recognizer.py` | `CropRequest`, `build_requests`, the recognizer Protocol |
 | `idp_reconstruct.py` | blocks to markdown, math and hyphen repair |
 

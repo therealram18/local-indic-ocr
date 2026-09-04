@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install IndicDocParser's dependencies into the active Python environment.
+# Install IndicOCR's dependencies into the active Python environment.
 #
 #     ./install.sh                # pick the CUDA wheels from your driver
 #     IDP_CUDA=cu121 ./install.sh # force a CUDA line
@@ -62,7 +62,7 @@ print(f"    torchvision  {torchvision.__version__}")
 print(f"    transformers {transformers.__version__}")
 print(f"    cuda         {'yes, ' + torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'NO -- running on CPU'}")
 import sys; sys.path.insert(0, ".")
-from indic_doc_parser import IndicDocParser  # noqa: F401
+from indic_ocr import IndicOCR  # noqa: F401
 print("    import       ok")
 PY
 echo "==> done"

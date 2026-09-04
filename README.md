@@ -52,11 +52,11 @@ per-block JSON.
 
 <div align="center">
 
-<img src="assets/diagram.png" alt="IndicDocParser: page image to layout detection with reading order, then block-level OCR, then Markdown" width="100%">
+<img src="assets/diagram.png" alt="IndicOCR: page image to layout detection with reading order, then block-level OCR, then Markdown" width="100%">
 
 </div>
 
-IndicDocParser reads a document page and returns its text in reading order. It is a modular,
+IndicOCR reads a document page and returns its text in reading order. It is a modular,
 two-stage parser: **IndicDocLayout** detects the blocks on the page and orders them, and
 **IndicBlockOCR** transcribes the textual blocks. The two stages communicate through a structured
 JSON file, so either stage can be used independently or replaced with another implementation.
@@ -132,7 +132,7 @@ virtual environment, please activate it first, as the installer installs into wh
 Python is active.
 
 ```bash
-IDP=$(python -c "from huggingface_hub import snapshot_download as d; print(d('bodhan-ai/indic-doc-parser'))")
+IDP=$(python -c "from huggingface_hub import snapshot_download as d; print(d('bodhan-ai/indic-ocr'))")
 cd "$IDP" && ./install.sh
 ```
 
@@ -145,11 +145,11 @@ convenient, [TROUBLESHOOTING.md](TROUBLESHOOTING.md) lists the two commands it r
 import sys
 from huggingface_hub import snapshot_download
 
-repo = snapshot_download("bodhan-ai/indic-doc-parser")
+repo = snapshot_download("bodhan-ai/indic-ocr")
 sys.path.insert(0, repo)                    # the code ships in the repo
-from indic_doc_parser import IndicDocParser
+from indic_ocr import IndicOCR
 
-parser = IndicDocParser.from_pretrained(repo)
+parser = IndicOCR.from_pretrained(repo)
 
 page = parser.parse("page.png")
 print(page["markdown"])                     # reading-ordered Markdown
@@ -169,7 +169,7 @@ with open("page.json", "w", encoding="utf-8") as f:
 To run the two stages separately:
 
 ```python
-from indic_doc_parser import IndicDocLayout, IndicBlockOCR
+from indic_ocr import IndicDocLayout, IndicBlockOCR
 
 layout = IndicDocLayout(f"{repo}/weights/layout").detect("page.png")
 page = IndicBlockOCR(f"{repo}/weights/ocr").run("page.png", layout)
@@ -230,8 +230,8 @@ explicitly. An unrecognised label is rejected rather than silently read as prose
 Tables come back as HTML by default. Choose the format when you construct the parser:
 
 ```python
-parser = IndicDocParser.from_pretrained(repo)                            # HTML (default)
-parser = IndicDocParser.from_pretrained(repo, table_format="markdown")   # Markdown
+parser = IndicOCR.from_pretrained(repo)                          # HTML (default)
+parser = IndicOCR.from_pretrained(repo, table_format="markdown") # Markdown
 ```
 
 ---
@@ -351,9 +351,9 @@ licenses for the applicable terms and attribution requirements.
 
 ```bibtex
 @misc{indicdocparser2026,
-  title  = {IndicDocParser: Multilingual Document Parsing for English and 22 Indian Languages},
+  title  = {IndicOCR: Multilingual Document Parsing for English and 22 Indian Languages},
   author = {Bodhan.AI},
   year   = {2026},
-  url    = {https://huggingface.co/bodhan-ai/indic-doc-parser}
+  url    = {https://huggingface.co/bodhan-ai/indic-ocr}
 }
 ```

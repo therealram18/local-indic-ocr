@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://huggingface.co/bodhan-ai/indic-doc-parser/raw/main/schemas/parse_output.schema.json",
+  "$id": "https://huggingface.co/bodhan-ai/indic-ocr/raw/main/schemas/parse_output.schema.json",
   "title": "Parsed page JSON (final output)",
   "description": "Every block carries 'text'.",
   "type": "object",
