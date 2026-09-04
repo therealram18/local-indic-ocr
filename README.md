@@ -42,7 +42,8 @@ tags:
 [![Layout](https://img.shields.io/badge/IndicDocLayout-33M-F97316?style=flat)](#the-two-models)
 [![Recognizer](https://img.shields.io/badge/IndicBlockOCR-0.8B-F97316?style=flat)](#the-two-models)
 [![Languages](https://img.shields.io/badge/Languages-23-F97316?style=flat)](#supported-languages)
-[![License](https://img.shields.io/badge/License-Apache--2.0-F97316?style=flat)](#license)
+[![License](https://img.shields.io/badge/License-Indic%20Open%20Model%20License%20v1.0-C1440E?style=flat#model-badge)](#license--terms-of-use)
+
 
 </div>
 
@@ -340,7 +341,7 @@ Latency and throughput numbers to follow.
 <h2 id="license" style="color:#F97316;">License</h2>
 
 
-Released under [Bodhan Open License 1.0]().
+Released under [Indic Open Model License v1.0](Bodhan_AI_Open_Model_License.md).
 
 The release incorporates components distributed under Apache 2.0, including PP-DocLayoutV3,
 Qwen3.5, and the Sarvam-30B tokenizer. See the repository license and the corresponding upstream
