@@ -350,7 +350,7 @@ licenses for the applicable terms and attribution requirements.
 <h2 id="citation" style="color:#F97316;">Citation</h2>
 
 ```bibtex
-@misc{indicdocparser2026,
+@misc{indicocr2026,
   title  = {IndicOCR: Multilingual Document Parsing for English and 22 Indian Languages},
   author = {Bodhan.AI},
   year   = {2026},
