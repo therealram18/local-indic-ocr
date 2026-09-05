@@ -42,8 +42,7 @@ tags:
 [![Layout](https://img.shields.io/badge/IndicDocLayout-33M-F97316?style=flat)](#the-two-models)
 [![Recognizer](https://img.shields.io/badge/IndicBlockOCR-0.8B-F97316?style=flat)](#the-two-models)
 [![Languages](https://img.shields.io/badge/Languages-23-F97316?style=flat)](#supported-languages)
-[![License](https://img.shields.io/badge/License-Indic%20Open%20Model%20License%20v1.0-C1440E?style=flat#model-badge)](#license--terms-of-use)
-
+[![License](https://img.shields.io/badge/License-Apache--2.0-F97316?style=flat)](#license)
 
 </div>
 
@@ -332,16 +331,25 @@ We are also extending handwriting support to additional Indic languages.
 
 ---
 
-<h2 id="hardware" style="color:#F97316;">Hardware</h2>
+<h2 id="throughput" style="color:#F97316;">Throughput</h2>
 
-Latency and throughput numbers to follow.
+We benchmarked our end-to-end pipeline with vLLM on a single NVIDIA H100 80GB GPU using a diverse
+mix of documents (math, tables, handwritten notes, research papers, multi-column, and even complex
+newspaper layouts) from the OmniDocBench V1.6 benchmark set (official english subset).
+
+| Concurrency | Pages / s | Output tokens / s | Median page (ms) | p95 page (ms) |
+| --- | :---: | :---: | :---: | :---: |
+| 32 | 5.13 | 6,594 | 3,295 | 19,243 |
+| 64 | 6.26 | 7,935 | 4,813 | 34,196 |
+| 128 | 6.34 | 7,736 | 9,337 | 72,970 |
+| 256 | 6.27 | 7,700 | 28,188 | 81,229 |
 
 ---
 
 <h2 id="license" style="color:#F97316;">License</h2>
 
 
-Released under [Indic Open Model License v1.0](Bodhan_AI_Open_Model_License.md).
+Released under [Bodhan Open License 1.0]().
 
 The release incorporates components distributed under Apache 2.0, including PP-DocLayoutV3,
 Qwen3.5, and the Sarvam-30B tokenizer. See the repository license and the corresponding upstream
