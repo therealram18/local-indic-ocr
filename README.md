@@ -247,9 +247,9 @@ parser = IndicOCR.from_pretrained(repo, table_format="markdown") # Markdown
 | **IndicOCR (ours)** | **92.76** | **0.04** | **97.53** | **85.10** | **90.58** | **0.11** |
 | GPT-5.6-sol | 92.46 | 0.04 | 95.42 | 85.87 | 90.98 | 0.10 |
 | Gemini 3.1 Pro | 91.15 | 0.06 | 95.53 | 83.46 | 88.77 | 0.13 |
-| Surya OCR 2 (model) | 91.13 | 0.04 | 95.67 | 81.61 | 86.37 | 0.10 |
+| Surya OCR 2 | 91.13 | 0.04 | 95.67 | 81.61 | 86.37 | 0.10 |
 | Sarvam Vision | 90.08 | 0.04 | 97.62 | 76.82 | 82.01 | 0.10 |
-| Gemma 31B | 86.71 | 0.09 | 89.48 | 79.79 | 85.19 | 0.19 |
+| Gemma-4-31B | 86.71 | 0.09 | 89.48 | 79.79 | 85.19 | 0.19 |
 | Nemotron Parse 2 | 79.12 | 0.159 | 78.94 | 74.32 | 81.09 | 0.29 |
 
 <h3 style="color:#F97316;">olmOCR-Bench (<a href="https://huggingface.co/datasets/sarvamai/olmOCR-Bench-English" style="color:#F97316;">english subset</a>)</h3>
@@ -260,17 +260,17 @@ parser = IndicOCR.from_pretrained(repo, table_format="markdown") # Markdown
 | Sarvam Vision | 84.3 | 86.5 | 99.6 | 96.3 | 91 | 82.2 | 49.8 | 81 | 88.3 |
 | Gemini 3.1 Pro | 82.6 | 90.5 | 99 | 82.9 | 88.5 | 81.6 | 47 | 84.3 | 87.3 |
 | **IndicOCR (ours)** | **82.2** | **83.2** | **99.4** | **92.9** | **89.8** | **76** | **48.3** | **77.7** | **90** |
-| Surya OCR 2 (model) | 81.4 | 82.5 | 99.8 | 92.9 | 79.9 | 85.1 | 42.8 | 84.3 | 84.2 |
-| Gemma 31B | 80.4 | 79 | 99.4 | 92.9 | 89.8 | 80.5 | 45.8 | 73.8 | 82.2 |
+| Surya OCR 2 | 81.4 | 82.5 | 99.8 | 92.9 | 79.9 | 85.1 | 42.8 | 84.3 | 84.2 |
+| Gemma-4-31B | 80.4 | 79 | 99.4 | 92.9 | 89.8 | 80.5 | 45.8 | 73.8 | 82.2 |
 | PaddleOCRVL-1.6 | 78.7 | 85.1 | 98.4 | 96.2 | 75.3 | 83.9 | 39 | 68.3 | 83 |
-| GPT | 78 | 79.3 | 93.9 | 95.4 | 87.8 | 77.4 | 43.7 | 64.6 | 82.2 |
+| GPT-5.6-sol | 78 | 79.3 | 93.9 | 95.4 | 87.8 | 77.4 | 43.7 | 64.6 | 82.2 |
 | Nemotron Parse 2 | 68.2 | 64 | 96.7 | 90 | 79.6 | 72.8 | 31.9 | 28.6 | 81.8 |
 
 <h3 style="color:#F97316;">IndicOCR-PR: printed accuracy by language (higher is better)</h3>
 
 Word-level accuracy, reported as 100 x (1 - WER).
 
-| Language | Sarvam Vision | **IndicOCR (ours)** | Gemini 3.1 Pro | SuryaOCR | Gemma 31B | Chandra OCR 2 |
+| Language | Sarvam Vision | **IndicOCR (ours)** | Gemini 3.1 Pro | Surya OCR 2 | Gemma-4-31B | Chandra OCR 2 |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Overall** | 86.6 | **86.2** | 80.4 | 67.9 | 66.3 | 64.2 |
 | Assamese | 89.5 | 90.2 | 90.7 | 86.4 | 70.6 | 73.5 |
@@ -301,7 +301,7 @@ Word-level accuracy, reported as 100 x (1 - WER).
 
 Word-level accuracy, reported as 100 x (1 - WER).
 
-| Language | Gemini 3.1 Pro | **IndicOCR (ours)** | Sarvam Vision | Gemma 31B | Chandra OCR 2 | SuryaOCR |
+| Language | Gemini 3.1 Pro | **IndicOCR (ours)** | Sarvam Vision | Gemma-4-31B | Chandra OCR 2 | Surya OCR 2 |
 | --- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Overall** | 72.0 | **66.7** | 55.4 | 33.9 | 24.7 | 23.0 |
 | Assamese | 71.6 | 66.1 | 47.8 | 24.1 | 8.9 | 17.8 |
