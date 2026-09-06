@@ -33,6 +33,7 @@ tags:
 - vision-language-model
 - qwen
 - rt-detr
+license: other
 ---
 
 
