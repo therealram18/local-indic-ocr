@@ -348,8 +348,7 @@ newspaper layouts) from the OmniDocBench V1.6 benchmark set (official english su
 
 <h2 id="license" style="color:#F97316;">License</h2>
 
-
-Released under [Bodhan Open License 1.0]().
+Released under [Indic Open Model License v1.0](Bodhan_AI_Open_Model_License.md).
 
 The release incorporates components distributed under Apache 2.0, including PP-DocLayoutV3,
 Qwen3.5, and the Sarvam-30B tokenizer. See the repository license and the corresponding upstream
