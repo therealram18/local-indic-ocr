@@ -1,5 +1,9 @@
 # INDIC OPEN MODEL LICENSE
 
+Version: 1.0
+
+Updated: 05 September 2026
+
 Copyright © 2026 IITM BODHAN-AI FOUNDATION. All rights reserved except as expressly granted below.
 
 ## Preamble
@@ -193,6 +197,18 @@ If Your own product or service — other than through Third-Party Hosting under 
 **15.6** Notices. Notices to Licensor under this License, including any request for approval under Section 3, must be in writing and sent to support@bodhan.ai.
 
 **15.7** Precedence. If You and Licensor enter into a separate written commercial agreement under Section 3 or Section 14, that agreement governs in the event of a conflict with this License, but only to the extent of the conflict and only as between the parties and subject matter of that agreement.
+
+## 16. Scope of This License; Third-Party and Upstream Components
+ 
+*This Section 16 addresses matters outside Licensor's control: what license terms apply to components the Software incorporates or ships alongside.*
+ 
+**16.1** Scope. This License applies only to the Software as released by Licensor and identified in the applicable model card. It does not extend to, and grants no rights in, any other model, dataset, or component — including any upstream model that the Software was trained on, fine-tuned from, distilled from, or otherwise derived from.
+ 
+**16.2** Upstream licenses. The Software may itself be derived from, fine-tuned on, or built using pre-trained models, datasets, code, or other components licensed by third parties ("Upstream Components"). Licensor may identify some Upstream Components in the model card or accompanying documentation, but does not represent or warrant that any such disclosure is complete or current. You are solely responsible for identifying any Upstream Components incorporated into or used to produce the Software, and for independently verifying and complying with the license terms that apply to them — including any attribution, field-of-use, redistribution, or share-alike conditions those licenses impose. Your compliance with this License does not relieve You of Your obligations under any applicable Upstream Component license, and nothing in this License is intended to override or narrow those obligations.
+ 
+**16.3** Additional software and tools. The Software may be accompanied by, bundled with, or reference additional software, libraries, tools, or dependencies that Licensor does not own (for example, inference runtimes, tokenization libraries, or evaluation scripts) ("Additional Components"). Except to the extent Licensor expressly states otherwise, Additional Components are not "Software" under this License and are governed solely by their own license terms. You are solely responsible for identifying the license applicable to any Additional Component You use and for complying with it.
+ 
+**16.4** No warranty as to third-party terms. Section 11.2 (No Warranty; Limitation of Liability) applies equally to this Section 16: Licensor makes no representation or warranty regarding the licensing status, completeness, or accuracy of any disclosure concerning Upstream Components or Additional Components, and disclaims all liability arising from Your use of them.
 
 ## Exhibit A — Attribution Notice
 
