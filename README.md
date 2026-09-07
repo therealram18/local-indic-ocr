@@ -445,6 +445,6 @@ If your own product built on this — not through hosting it for others, that's 
   title  = {IndicOCR: Multilingual Document Parsing for English and 22 Indian Languages},
   author = {Bodhan AI and AI4Bharat},
   year   = {2026},
-  url    = {https://huggingface.co/bodhan-ai/indic-ocr}
+  url    = {https://bodhan.ai/research/blogs/indic-ocr}
 }
 ```
