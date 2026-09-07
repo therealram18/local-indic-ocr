@@ -36,6 +36,9 @@ tags:
 license: other
 ---
 
+<div align="center">
+  <img src="indic-ocr-banner.png" alt="IndicOCR: Multilingual Document Parsing for English and 22 Indian Languages">
+</div>
 
 <div align="center">
 
