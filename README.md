@@ -1,4 +1,17 @@
 ---
+extra_gated_prompt: "Please provide your details and agree to the [LICENSE](https://github.com/Bodhan-AI/bodhan-model-info/blob/main/licenses/indic-open-model-license/v1/Indic_Open_Model_License.md) [[simpler version](https://github.com/Bodhan-AI/bodhan-model-info/blob/main/licenses/indic-open-model-license/v1/Indic_Open_Model_License_Deed.md)] to request access."
+extra_gated_fields:
+  Company / Organization: text
+  Country: country
+  Intended Use Case:
+    type: select
+    options:
+      - Research
+      - Commercial
+      - Education
+      - label: Other
+        value: other
+  I agree to the license terms: checkbox
 language:
 - en
 - as
