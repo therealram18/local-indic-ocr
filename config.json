@@ -1,0 +1,18 @@
+{
+  "model_type": "indic_ocr",
+  "pipeline": "two-stage",
+  "stages": {
+    "layout": {
+      "name": "IndicDocLayout",
+      "config": "weights/layout/config.json",
+      "weights": "weights/layout/model.safetensors"
+    },
+    "ocr": {
+      "name": "IndicBlockOCR",
+      "config": "weights/ocr/config.json",
+      "weights": "weights/ocr/model-00001-of-00001.safetensors"
+    }
+  },
+  "entrypoint": "indic_ocr.IndicOCR.from_pretrained",
+  "note": "Stage configs live under weights/. This root config describes the repo layout; the loader reads the per-stage configs directly."
+}
