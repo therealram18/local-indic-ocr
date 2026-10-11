@@ -36,6 +36,7 @@ class LlamaCppRecognizer:
             ]}],
             "temperature": 0,  # greedy, like the reference recognizer
             "max_tokens": self.max_tokens,
+            "chat_template_kwargs": {"enable_thinking": False},  # don't stream "thinking..." messages
         }
         http_req = urllib.request.Request(
             self.url, data=json.dumps(body).encode(), headers={"Content-Type": "application/json"}
