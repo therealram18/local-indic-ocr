@@ -24,15 +24,15 @@ ocr = IndicBlockOCR(
     crop=CropConfig(min_px_side=256, max_px_side=1024),
     backend=LlamaCppRecognizer("http://127.0.0.1:8081"),
 )
-parser = IndicOCR.from_pretrained(repo, table_format="markdown")
-parser._rec_cfg = parser._rec_cfg.merged(dtype="int8")
-# parser._layout_cfg = parser._layout_cfg.merged(dtype="int8")
-parser._layout_cfg = LayoutConfig(device='cpu')
-parser.recognizer.crop = CropConfig(min_px_side=256, max_px_side=1024)
+# parser = IndicOCR.from_pretrained(repo, table_format="markdown")
+# parser._rec_cfg = parser._rec_cfg.merged(dtype="int8")
+# # parser._layout_cfg = parser._layout_cfg.merged(dtype="int8")
+# parser._layout_cfg = LayoutConfig(device='cpu')
+# parser.recognizer.crop = CropConfig(min_px_side=256, max_px_side=1024)
 
 if __name__ == "__main__":
 
-  prs = argparse.ArgumentParser(description="IndicOCR Custom Inference")
+  prs = argparse.ArgumentParser(description="IndicOCR Custom Inference (CPU)")
   prs.add_argument("--image", type=str, help="Path to the input image")
   args = prs.parse_args()
 
@@ -40,5 +40,5 @@ if __name__ == "__main__":
   if not img_path.is_file():
         raise ValueError("Invalid image path. Please provide a valid path to the input image.")
 
-  page = parser.parse(img_path)
-  print(page["markdown"])                     # reading-ordered Markdown
+  page = ocr.run(str(img_path), layout.detect(str(img_path)))
+  print(page.markdown)                     # reading-ordered Markdown
