@@ -4,7 +4,7 @@ import argparse
 
 from idp_types import LayoutConfig, CropConfig, RecognizerConfig, TableFormat
 from idp_offline import IndicBlockOCR, IndicDocLayout
-from idp_llamaccp import LlamaCppRecognizer
+from idp_llamacpp import LlamaCppRecognizer
 # from huggingface_hub import snapshot_download
 
 # repo = snapshot_download("bodhan-ai/indic-ocr")
@@ -15,8 +15,8 @@ from idp_llamaccp import LlamaCppRecognizer
 repo = Path(sys.path[0])
 
 # Layout model
-layout = IndicDocLayout(str(repo/"weights"/"layout")),
-LayoutConfig(device='cpu')
+layout = IndicDocLayout(str(repo/"weights"/"layout"),
+LayoutConfig(device='cpu'))
 
 # OCR model: served by llama-server
 ocr = IndicBlockOCR(
