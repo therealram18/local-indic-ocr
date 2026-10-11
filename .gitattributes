@@ -57,3 +57,4 @@ assets/cand-hindi-maths-g10-6pr6eq-7dcd5d95-p20.png filter=lfs diff=lfs merge=lf
 assets/gallery-1-english-math-ramanujan.png filter=lfs diff=lfs merge=lfs -text
 assets/gallery-2-telugu-novel.png filter=lfs diff=lfs merge=lfs -text
 indic-ocr-banner.png filter=lfs diff=lfs merge=lfs -text
+*.gguf filter=lfs diff=lfs merge=lfs -text
